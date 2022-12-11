@@ -1,0 +1,21 @@
+{
+  "name": "stop-rows-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js"
+  },
+  "author": "Nahuel Uliassi Pirchio",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.29.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "prettier": "^2.8.1"
+  }
+}
