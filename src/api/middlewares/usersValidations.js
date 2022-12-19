@@ -5,7 +5,7 @@ const userSchema = Joi.object({
     email: Joi.string().email().required(),
     nickname: Joi.string().min(3).max(30).required(),
     password: Joi.string().min(6).max(30).required(),
-    role: Joi.string().valid('admin', 'user').required(),
+    role: Joi.string().valid('admin', 'customer', 'owner').required(),
 });
 
 const userUpdateSchema = Joi.object({
@@ -13,7 +13,7 @@ const userUpdateSchema = Joi.object({
     email: Joi.string().email(),
     nickname: Joi.string().min(3).max(30),
     password: Joi.string().min(6).max(30),
-    role: Joi.string().valid('admin', 'user'),
+    role: Joi.string().valid('admin', 'customer', 'owner'),
 });
 
 const validateUser = (req, res, next) => {

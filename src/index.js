@@ -1,5 +1,9 @@
+require('../src/api/database/mongodb');
+
 const express = require('express');
-const PORT = process.env.PORT || 3001;
+const config = require('./api/config');
+
+const PORT = config.port;
 
 const v1Router = require('./api/v1/routes/index');
 
