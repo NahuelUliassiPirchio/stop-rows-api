@@ -1,28 +1,42 @@
 const {Schema, model} = require('mongoose');
 
-const UserSchema = new Schema({
+const ShopSchema = new Schema({
     name: {
         type: String,
         required: true,
     },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    password: {
+    description: {
         type: String,
         required: true,
     },
-    nickname: {
+    address: {
         type: String,
         required: true,
-        unique: true,
     },
-    role: {
+    phone: {
         type: String,
         required: true,
-        default: 'customer',
+    },
+    website: {
+        type: String,
+        required: true,
+    },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    logo: {
+        type: String,
+        required: true,
+    },
+    category: {
+        type: String,
+        required: true,
+    },
+    coords: {
+        type: String,
+        required: true,
     },
     createdAt: {
         type: Date,
@@ -32,23 +46,18 @@ const UserSchema = new Schema({
         type: Date,
         default: Date.now,
     },
-    shops: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: 'Shop',
-        },
-    ],
 });
 
-UserSchema.set('toJSON', {
+ShopSchema.index({ email: 1 }, { unique: true });
+
+ShopSchema.set('toJSON', {
     transform: (document, returnedObject) => {
-        delete returnedObject.password;
         delete returnedObject.__v;
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
     }
 });
 
-const User = model('User', UserSchema);
+const Shop = model('Shop', ShopSchema);
 
-module.exports = User;
+module.exports = Shop;

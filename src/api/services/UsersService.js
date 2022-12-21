@@ -2,7 +2,7 @@ const User = require('../database/models/User');
 
 const UsersService = {
     async getAllUsers() {
-        const users = await User.find();
+        const users = await User.find().populate('shops');
         return users;        
     },
     async getUserById(id) {
