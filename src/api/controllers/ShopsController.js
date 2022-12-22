@@ -1,30 +1,50 @@
 const ShopsService = require('../services/ShopsService');
 
 const ShopsController = {
-    getAllShops: async (req, res) => {
-        const shops = await ShopsService.getAllShops();
-        res.status(200).json(shops);
+    getAllShops: async (req, res, next) => {
+        try {
+            const shops = await ShopsService.getAllShops();
+            res.status(200).json(shops);
+        } catch (err) {
+            next(err);
+        }
     },
-    getShopById: async (req, res) => {
+    getShopById: async (req, res, next) => {
         const { id } = req.params;
-        const shop = await ShopsService.getShopById(id);
-        res.status(200).json(shop);
+        try {
+            const shop = await ShopsService.getShopById(id);
+            res.status(200).json(shop);
+        } catch (err) {
+            next(err);
+        }
     },
-    addShop: async (req, res) => {
+    addShop: async (req, res, next) => {
         const { body } = req;
-        const shop = await ShopsService.addShop(body);
-        res.status(201).json(shop);
+        try {
+            const shop = await ShopsService.addShop(body);
+            res.status(201).json(shop);
+        } catch (err) {
+            next(err);
+        }
     },
-    updateShop: async (req, res) => {
+    updateShop: async (req, res, next) => {
         const { id } = req.params;
         const { body } = req;
-        const shop = await ShopsService.updateShop(id, body);
-        res.status(200).json(shop);
+        try {
+            const shop = await ShopsService.updateShop(id, body);
+            res.status(200).json(shop);
+        } catch (err) {
+            next(err);
+        }
     },
-    deleteShop: async (req, res) => {
+    deleteShop: async (req, res, next) => {
         const { id } = req.params;
-        const shop = await ShopsService.deleteShop(id);
-        res.status(200).json(shop);
+        try {
+            const shop = await ShopsService.deleteShop(id);
+            res.status(200).json(shop);
+        } catch (err) {
+            next(err);
+        }
     }
 };
 

@@ -1,33 +1,53 @@
 const UsersService = require('../services/UsersService');
 
-const getAllUsers = async (req, res) => {
-    const users = await UsersService.getAllUsers();
-    res.status(200).json(users);
+const getAllUsers = async (req, res, next) => {
+    try{
+        const users = await UsersService.getAllUsers();
+        res.status(200).json(users);}
+    catch(err){
+        next(err);
+    }
 };
 
-const getUserById = async (req, res) => {
+const getUserById = async (req, res, next) => {
     const { id } = req.params;
-    const user = await UsersService.getUserById(id);
-    res.status(200).json(user);
+    try {
+        const user = await UsersService.getUserById(id);
+        res.status(200).json(user);
+    } catch (err) {
+        next(err);
+    }
 };
 
-const createNewUser = async (req, res) => {
+const createNewUser = async (req, res, next) => {
     const { body } = req;
-    const newUser = await UsersService.addUser(body);
-    res.status(201).json(newUser);
+    try {
+        const newUser = await UsersService.addUser(body);
+        res.status(201).json(newUser);
+    } catch (err) {
+        next(err);
+    }
 };
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
     const { id } = req.params;
     const { body } = req;
-    const updatedUser = await UsersService.updateUser(id, body);
-    res.status(200).json(updatedUser);
+    try {
+        const updatedUser = await UsersService.updateUser(id, body);
+        res.status(200).json(updatedUser);
+    } catch (err) {
+        next(err);
+    }
 };
 
-const deleteUser = async (req, res) => {
+const deleteUser = async (req, res, next) => {
     const { id } = req.params;
-    const deletedUser = await UsersService.deleteUser(id);
-    res.status(200).json(deletedUser);
+    try {
+        const deletedUser = await UsersService.deleteUser(id);
+        res.status(200).json(deletedUser);
+    } catch (err) {
+        next(err);
+    }
 };
 
 module.exports = {

@@ -7,9 +7,6 @@ const UsersService = {
     },
     async getUserById(id) {
         const user = await User.findById(id);
-        if (!user) {
-            throw new Error('User not found');
-        }
         return user;
     },
     async addUser(user) {
@@ -19,16 +16,10 @@ const UsersService = {
     async updateUser(id, user) {
         const updatedUser = await User.findByIdAndUpdate(id, user,
             {new: true});
-        if (!updatedUser) {
-            throw new Error('User not found');
-        }
         return updatedUser;
     },
     async deleteUser(id) {
         const deletedUser = await User.findByIdAndDelete(id);
-        if (!deletedUser) {
-            throw new Error('User not found');
-        }
         return deletedUser;
     },
 };
