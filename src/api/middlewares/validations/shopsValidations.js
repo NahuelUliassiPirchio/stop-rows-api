@@ -7,7 +7,7 @@ const shopSchema = Joi.object({
     phone: Joi.string().min(3).max(30).required(),
     email: Joi.string().min(3).max(30).required(),
     website: Joi.string().min(3).max(30).required(),
-    logo: Joi.string().min(3).max(60).required(),
+    logo: Joi.string().min(3).max(120).required(),
     category: Joi.string().min(3).max(30).required(),
     owner: Joi.string().min(3).max(30).required(),
     coords: Joi.string().min(3).max(30).required(),

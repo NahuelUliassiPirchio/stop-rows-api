@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const controller = require('../../controllers/ShopsController');
 
-const { validateShop, validateShopUpdate } = require('../../middlewares/shopsValidations');
+const { validateShop, validateShopUpdate } = require('../../middlewares/validations/shopsValidations');
 const router = Router();
 
 router.get('/', controller.getAllShops);

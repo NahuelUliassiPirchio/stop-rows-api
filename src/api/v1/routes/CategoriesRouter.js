@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const controller = require('../../controllers/CategoriesController');
 
-const { validateCategory, validateCategoryUpdate } = require('../../middlewares/categoriesValidations');
+const { validateCategory, validateCategoryUpdate } = require('../../middlewares/validations/categoriesValidations');
 const router = Router();
 
 router.get('/', controller.getAllCategories);

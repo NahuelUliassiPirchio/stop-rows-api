@@ -38,6 +38,11 @@ const UserSchema = new Schema({
             ref: 'Shop',
         },
     ],
+    row: {
+        type: Schema.Types.ObjectId,
+        ref: 'Row',
+        default: null,
+    },
 });
 
 UserSchema.set('toJSON', {
