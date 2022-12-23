@@ -46,6 +46,13 @@ const ShopSchema = new Schema({
         type: Date,
         default: Date.now,
     },
+    categories: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Category',
+        },
+    ],
+    
 });
 
 ShopSchema.index({ email: 1 }, { unique: true });

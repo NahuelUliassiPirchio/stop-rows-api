@@ -11,6 +11,7 @@ const shopSchema = Joi.object({
     category: Joi.string().min(3).max(30).required(),
     owner: Joi.string().min(3).max(30).required(),
     coords: Joi.string().min(3).max(30).required(),
+    categories: Joi.array().items(Joi.string().min(3).max(30)),
 });
 
 const shopUpdateSchema = Joi.object({
@@ -21,9 +22,9 @@ const shopUpdateSchema = Joi.object({
     email: Joi.string().min(3).max(30),
     website: Joi.string().min(3).max(30),
     logo: Joi.string().min(3).max(30),
-    category: Joi.string().min(3).max(30),
     owner: Joi.string().min(3).max(30),
     coords: Joi.string().min(3).max(30),
+    categories: Joi.array().items(Joi.string().min(3).max(30)),
 });
 
 const validateShop = (req, res, next) => {
