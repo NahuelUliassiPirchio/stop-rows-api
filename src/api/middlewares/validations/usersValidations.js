@@ -1,11 +1,12 @@
 const Joi = require('joi');
+const roles = require('../../database/models/UserRolesEnum');
 
 const userSchema = Joi.object({
     name: Joi.string().min(3).max(30).required(),
     email: Joi.string().email().required(),
     username: Joi.string().min(3).max(30).required(),
     password: Joi.string().min(6).max(30).required(),
-    role: Joi.string().valid('admin', 'customer', 'owner').required(),
+    role: Joi.string().valid(...Object.values(roles)).required(),
 });
 
 const userUpdateSchema = Joi.object({
@@ -13,7 +14,7 @@ const userUpdateSchema = Joi.object({
     email: Joi.string().email(),
     username: Joi.string().min(3).max(30),
     password: Joi.string().min(6).max(30),
-    role: Joi.string().valid('admin', 'customer', 'owner'),
+    role: Joi.string().valid(...Object.values(roles)),
 });
 
 const validateUser = (req, res, next) => {

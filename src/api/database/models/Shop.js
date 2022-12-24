@@ -55,7 +55,7 @@ const ShopSchema = new Schema({
     
 });
 
-ShopSchema.index({ email: 1 }, { unique: true });
+// ShopSchema.index({ email: 1 }, { unique: true });
 
 ShopSchema.set('toJSON', {
     transform: (document, returnedObject) => {

@@ -3,7 +3,7 @@ const controller = require('../../controllers/RowsController');
 
 const forShopRouter = Router({ mergeParams: true});
 const publicRouter = Router();
-const { validateRow, validateRowUpdate } = require('../../middlewares/validations/rowsValidations');
+const { validateRowUpdate } = require('../../middlewares/validations/rowsValidations');
 
 publicRouter.get('/', controller.getAllRows);
 publicRouter.get('/:rowId', controller.getRowById);
