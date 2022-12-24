@@ -1,6 +1,7 @@
 require('../src/api/database/mongodb');
 
 const express = require('express');
+const passport = require('passport');
 const config = require('./api/config');
 const errorHandler = require('./api/middlewares/errorHandler');
 
@@ -12,6 +13,9 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+require('./api/auth');
+app.use(passport.initialize());
 
 app.use(//'/v1',
     v1Router);

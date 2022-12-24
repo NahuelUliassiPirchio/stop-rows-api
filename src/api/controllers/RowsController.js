@@ -1,7 +1,7 @@
 const RowsService = require('../services/RowsService');
 
 const RowsController = {
-    getAllRows: async (_req, res, next) => {
+    getAllRows: async (req, res, next) => {
         try {
             const rows = await RowsService.getAllRows();
             res.status(200).json(rows);
