@@ -8,7 +8,6 @@ const shopSchema = Joi.object({
     email: Joi.string().min(3).max(30).required(),
     website: Joi.string().min(3).max(30).required(),
     logo: Joi.string().min(3).max(120).required(),
-    category: Joi.string().min(3).max(30).required(),
     owner: Joi.string().min(3).max(30).required(),
     coords: Joi.string().min(3).max(30).required(),
     categories: Joi.array().items(Joi.string().min(3).max(30)),
@@ -27,6 +26,10 @@ const shopUpdateSchema = Joi.object({
     categories: Joi.array().items(Joi.string().min(3).max(30)),
 });
 
+const shopFilterSchema = Joi.object({
+    search: Joi.string().max(30),
+});
+
 const validateShop = (req, res, next) => {
     const { error } = shopSchema.validate(req.body);
     if (error) {
@@ -43,7 +46,16 @@ const validateShopUpdate = (req, res, next) => {
     next();
 };
 
+const validateShopFilter = (req, res, next) => {
+    const { error } = shopFilterSchema.validate(req.query);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    next();
+};
+
 module.exports = {
     validateShop,
     validateShopUpdate,
+    validateShopFilter,
 };

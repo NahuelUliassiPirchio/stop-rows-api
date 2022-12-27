@@ -19,8 +19,6 @@ const userUpdateSchema = Joi.object({
 
 const validateUser = (req, res, next) => {
     const schemaValidationResult = userSchema.validate(req.body);
-    console.log(req.body
-    );
     const { error } = schemaValidationResult;
     if(error) return res.status(400).json({ message: error.details[0].message });
     next();

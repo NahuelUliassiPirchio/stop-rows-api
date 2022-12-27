@@ -45,6 +45,9 @@ const UserSchema = new Schema({
     },
 });
 
+UserSchema.index({ email: 1 }, { unique: true });
+UserSchema.index({ username: 1 }, { unique: true });
+
 UserSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         delete returnedObject.password;

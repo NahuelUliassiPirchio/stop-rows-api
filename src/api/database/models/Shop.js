@@ -4,8 +4,14 @@ const ShopSchema = new Schema({
     name: {
         type: String,
         required: true,
+        text: true,
     },
     description: {
+        type: String,
+        required: true,
+        text: true,
+    },
+    email: {
         type: String,
         required: true,
     },
@@ -30,10 +36,6 @@ const ShopSchema = new Schema({
         type: String,
         required: true,
     },
-    category: {
-        type: String,
-        required: true,
-    },
     coords: {
         type: String,
         required: true,
@@ -55,7 +57,10 @@ const ShopSchema = new Schema({
     
 });
 
-// ShopSchema.index({ email: 1 }, { unique: true });
+ShopSchema.index({ email: 1 }, { unique: true });
+ShopSchema.index({ website: 1 }, { unique: true });
+ShopSchema.index({ name: 1, description: 1 }, { unique: true});
+ShopSchema.index({ name: 'text', description: 'text' });
 
 ShopSchema.set('toJSON', {
     transform: (document, returnedObject) => {
@@ -65,6 +70,5 @@ ShopSchema.set('toJSON', {
     }
 });
 
-const Shop = model('Shop', ShopSchema);
 
-module.exports = Shop;
+module.exports = model('Shop', ShopSchema);

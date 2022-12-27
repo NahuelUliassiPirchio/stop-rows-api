@@ -2,8 +2,9 @@ const ShopsService = require('../services/ShopsService');
 
 const ShopsController = {
     getAllShops: async (req, res, next) => {
+        const { query } = req;
         try {
-            const shops = await ShopsService.getAllShops();
+            const shops = await ShopsService.getAllShops(query);
             res.status(200).json(shops);
         } catch (err) {
             next(err);
@@ -45,7 +46,7 @@ const ShopsController = {
         } catch (err) {
             next(err);
         }
-    }
+    },
 };
 
 module.exports = ShopsController;

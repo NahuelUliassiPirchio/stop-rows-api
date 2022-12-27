@@ -2,8 +2,11 @@ const Shop = require('../database/models/Shop');
 const {getUserById} = require('./UsersService');
 
 const ShopsService = {
-    getAllShops: async () => {
-        const shops = await Shop.find().populate('owner');
+    getAllShops: async (query) => {
+        const search = query.search || '';
+        const shops = await Shop.find(
+            {$text: {$search: search}}
+        );
         return shops;
     },
     getShopById: async (id) => {
@@ -25,7 +28,7 @@ const ShopsService = {
     deleteShop: async (id) => {
         const deletedShop = await Shop.findByIdAndDelete(id);
         return deletedShop;
-    }
+    },
 };
 
 module.exports = ShopsService;

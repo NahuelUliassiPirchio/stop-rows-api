@@ -20,7 +20,7 @@ const errorHandler = (err, req, res, next) => {
         error.status = 404;
     }
 
-    if (err.name === 'MongoError' && err.code === 11000) {
+    if (err.code === 11000 && err.name === 'MongoServerError') {
         error.message = 'Duplicate field value entered';
         error.status = 419;
     }
