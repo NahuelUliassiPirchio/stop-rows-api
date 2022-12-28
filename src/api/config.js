@@ -13,4 +13,8 @@ module.exports = {
         secret: process.env.JWT_SECRET,
         expiresIn: process.env.JWT_EXPIRES_IN,
     },
+    rateLimit: {
+        windowMs: process.env.RATE_LIMIT_WINDOW_MS,
+        max: process.env.RATE_LIMIT_MAX,
+    },
 };

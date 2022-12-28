@@ -6,6 +6,7 @@ const config = require('../../config');
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: config.jwt.secret,
+    expiresIn: 15 * 60 * 1000,
 };
 
 const jwtStrategy = new Strategy(

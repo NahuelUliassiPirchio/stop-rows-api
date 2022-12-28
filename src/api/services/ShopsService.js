@@ -5,7 +5,7 @@ const ShopsService = {
     getAllShops: async (query) => {
         const search = query.search || '';
         const shops = await Shop.find(
-            {$text: {$search: search}}
+            // {$text: {$search: search}}
         );
         return shops;
     },
