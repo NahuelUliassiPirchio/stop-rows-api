@@ -36,6 +36,22 @@ const UsersService = {
         const deletedUser = await User.findByIdAndDelete(id);
         return deletedUser;
     },
+    async getProfile(user) {
+        const profile = await User.findById(user._id).populate('shops');
+        return profile;
+    },
+    async updateProfile(user, body) {
+        const profile = await User.findByIdAndUpdate(user._id, body, {new: true});
+        return profile;
+    },
+    async deleteProfile(user) {
+        const profile = await User.findByIdAndUpdate(user._id, {isDeleted: true}, {new: true});
+        return profile;
+    },
+    async restoreProfile(user) {
+        const profile = await User.findByIdAndUpdate(user._id, {isDeleted: false}, {new: true});
+        return profile;
+    }
 };
 
 

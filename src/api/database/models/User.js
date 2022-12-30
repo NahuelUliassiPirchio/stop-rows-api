@@ -24,6 +24,10 @@ const UserSchema = new Schema({
         required: true,
         default: 'customer',
     },
+    isDeleted: {
+        type: Boolean,
+        default: false,
+    },
     createdAt: {
         type: Date,
         default: Date.now,

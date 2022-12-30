@@ -37,14 +37,13 @@ const RowsService = {
     async userJoinRow(id, user) {
         const row = await Row.findById(id);
         if (row.status === 'closed') throw new Error('The row is closed');
-        if (row.customers.includes(user)) {
-            row.customers = row.customers.filter(customer => customer.user._id !== user._id);
+        if (row.customers.some(customer => customer.user._id.toString() === user._id.toString())) {
+            row.customers = row.customers.filter(customer => customer.user._id.toString() !== user._id.toString());
         }
         row.customers.push({user, date: new Date()});
         row.save();
         user.row = row._id;
         user.save();
-        // usersService.updateUser(user._id, user);
         return row;
     },
     async userLeaveRow(id, user) {
