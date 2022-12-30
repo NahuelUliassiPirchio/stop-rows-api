@@ -1,5 +1,4 @@
 const Row = require('../database/models/Row');
-const usersService = require('./UsersService');
 
 const RowsService = {
     async getAllRows() {
@@ -32,26 +31,32 @@ const RowsService = {
         return updatedRow;
     },
     async deleteRow(id) {
-        const deletedRow = await Row.findByIdAndDelete(id);
+        const deletedRow = await Row.findOneAndRemove({shop: id});
         return deletedRow;
     },
-    async userJoinRow(id, userId) {
+    async userJoinRow(id, user) {
         const row = await Row.findById(id);
-        const user = await usersService.getUserById(userId);
-        row.customers.push({user: userId, date: new Date()});
+        if (row.status === 'closed') throw new Error('The row is closed');
+        if (row.customers.includes(user)) {
+            row.customers = row.customers.filter(customer => customer.user._id !== user._id);
+        }
+        row.customers.push({user, date: new Date()});
         row.save();
         user.row = row._id;
         user.save();
+        // usersService.updateUser(user._id, user);
         return row;
     },
-    async userLeaveRow(id, userId) {
+    async userLeaveRow(id, user) {
         const row = await Row.findById(id);
-        const user = await usersService.getUserById(userId);
-        row.customers = row.customers.filter(customer => customer.user !== userId);
+        if (row.status === 'closed') throw new Error('The row is closed');
+        if (!row.customers.includes(user)) throw new Error('User is not in the row');
+
+        row.customers = row.customers.filter(customer => customer.user._id !== user._id);
         row.save();
         user.row = null;
         user.save();
-        return row;
+        return {row, user};
     },
 };
 

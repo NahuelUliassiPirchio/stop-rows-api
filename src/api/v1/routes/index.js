@@ -11,7 +11,8 @@ const passport = require('passport');
 router.use('/auth', authRouter);
 router.use('/rows', rowsRouter.publicRouter);
 router.use('/shops', shopsRouter);
-shopsRouter.use('/:shopId/rows', passport.authenticate('jwt', {session: false}), rowsRouter.forShopRouter);
+shopsRouter.use('/:shopId/rows', passport.authenticate('jwt', {session: false}), rowsRouter.forShopRouterOnwer);
+router.use('/rows/:rowId', passport.authenticate('jwt', {session: false}), rowsRouter.forShopRouterCustomer);
 router.use('/users', usersRouter);
 router.use('/categories', categoriesRouter);
 

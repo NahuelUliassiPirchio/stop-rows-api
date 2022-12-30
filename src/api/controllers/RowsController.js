@@ -57,27 +57,27 @@ const RowsController = {
         }
     },
     deleteRow: async (req, res, next) => {
-        const { id } = req.params;
+        const { shopId } = req.params;
         try {
-            const row = await RowsService.deleteRow(id);
+            const row = await RowsService.deleteRow(shopId);
             res.status(200).json(row);
         } catch (err) {
             next(err);
         }
     },
     userJoinRow: async (req, res, next) => {
-        const { body } = req;
+        const { rowId } = req.params;
         try {
-            const row = await RowsService.userJoinRow(body);
+            const row = await RowsService.userJoinRow(rowId, req.user);
             res.status(200).json(row);
         } catch (err) {
             next(err);
         }
     },
     userLeaveRow: async (req, res, next) => {
-        const { body } = req;
+        const { rowId } = req.params;
         try {
-            const row = await RowsService.userLeaveRow(body);
+            const row = await RowsService.userLeaveRow(rowId, req.user);
             res.status(200).json(row);
         } catch (err) {
             next(err);

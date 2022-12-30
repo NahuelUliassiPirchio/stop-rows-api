@@ -20,6 +20,7 @@ const rowSchema = new Schema({
     status: {
         type: String,
         enum: ['open', 'closed'],
+        default: 'open',
         required: true,
     },
     createdAt: {
@@ -27,6 +28,9 @@ const rowSchema = new Schema({
         default: Date.now,
     },
 });
+
+rowSchema.index({shop: 1}, {unique: true});
+rowSchema.index({status: 1});
 
 rowSchema.set('toJSON', {
     transform: (document, returnedObject) => {
