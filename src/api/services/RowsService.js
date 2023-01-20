@@ -1,4 +1,5 @@
 const Row = require('../database/models/Row');
+const Shop = require('../database/models/Shop');
 
 const RowsService = {
     async getAllRows() {
@@ -12,6 +13,9 @@ const RowsService = {
     async addRow(row, shopId) {
         row.shop = shopId;
         const newRow = await Row.create(row);
+        const shop = await Shop.findById(shopId);
+        shop.row = newRow._id;
+        await shop.save();
         return newRow;
     },
     async resumeRow(id) {

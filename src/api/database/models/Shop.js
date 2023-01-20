@@ -1,5 +1,17 @@
 const {Schema, model} = require('mongoose');
 
+const locationSchema = new Schema({
+    type: {
+        type: String,
+        enum: ['Point'],
+        required: true,
+    },
+    coordinates: {
+        type: [Number],
+        required: true,
+    },
+});
+
 const ShopSchema = new Schema({
     name: {
         type: String,
@@ -36,8 +48,8 @@ const ShopSchema = new Schema({
         type: String,
         required: true,
     },
-    coords: {
-        type: String,
+    location: {
+        type: locationSchema,
         required: true,
     },
     createdAt: {
@@ -54,13 +66,17 @@ const ShopSchema = new Schema({
             ref: 'Category',
         },
     ],
-    
+    row: {
+        type: Schema.Types.ObjectId,
+        ref: 'Row',
+    },
 });
 
 ShopSchema.index({ email: 1 }, { unique: true });
 ShopSchema.index({ website: 1 }, { unique: true });
 ShopSchema.index({ name: 1, description: 1 }, { unique: true});
 ShopSchema.index({ name: 'text', description: 'text' });
+ShopSchema.index({ location: '2dsphere' });
 
 ShopSchema.set('toJSON', {
     transform: (document, returnedObject) => {

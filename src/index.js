@@ -14,6 +14,11 @@ const v1Router = require('./api/v1/routes/index');
 
 const app = express();
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 app.use(helmet());
 
 app.use(rateLimit);

@@ -9,7 +9,7 @@ const shopSchema = Joi.object({
     website: Joi.string().min(3).max(30).required(),
     logo: Joi.string().min(3).max(120).required(),
     owner: Joi.string().min(3).max(30).required(),
-    coords: Joi.string().min(3).max(30).required(),
+    coords: Joi.array().items(Joi.number()).required(),
     categories: Joi.array().items(Joi.string().min(3).max(30)),
 });
 
@@ -22,12 +22,17 @@ const shopUpdateSchema = Joi.object({
     website: Joi.string().min(3).max(30),
     logo: Joi.string().min(3).max(30),
     owner: Joi.string().min(3).max(30),
-    coords: Joi.string().min(3).max(30),
+    coords: Joi.array().items(Joi.number()).length(2),
     categories: Joi.array().items(Joi.string().min(3).max(30)),
 });
 
-const shopFilterSchema = Joi.object({
+const shopFilterAndPaginationSchema = Joi.object({
     search: Joi.string().max(30),
+    page: Joi.number().integer().min(1),
+    limit: Joi.number().integer().min(1).max(100),
+    status: Joi.string().valid('open', 'closed'),
+    lat: Joi.number().when('lng', { is: Joi.exist(), then: Joi.required() }).min(-90).max(90),
+    lng: Joi.number().min(-180).max(180),
 });
 
 const validateShop = (req, res, next) => {
@@ -47,7 +52,7 @@ const validateShopUpdate = (req, res, next) => {
 };
 
 const validateShopFilter = (req, res, next) => {
-    const { error } = shopFilterSchema.validate(req.query);
+    const { error } = shopFilterAndPaginationSchema.validate(req.query);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
     }
