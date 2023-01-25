@@ -3,17 +3,20 @@ const Shop = require('../database/models/Shop');
 
 const RowsService = {
     async getAllRows() {
-        const rows = await Row.find().populate('shop');
+        const rows = await Row.find().populate('shop').populate('customers.user');
         return rows;
     },
     async getRowById(id) {
-        const row = await Row.findById(id);
+        const row = await Row.findById(id).populate('shop').populate('customers.user');
         return row;
     },
     async addRow(row, shopId) {
         row.shop = shopId;
         const newRow = await Row.create(row);
         const shop = await Shop.findById(shopId);
+        if (shop.row) {
+            await Row.findByIdAndRemove(shop.row);
+        }
         shop.row = newRow._id;
         await shop.save();
         return newRow;
@@ -35,11 +38,16 @@ const RowsService = {
         return updatedRow;
     },
     async deleteRow(id) {
+        const shop = await Shop.findOne({id});
+        shop.row = null;
+        await shop.save();
+
         const deletedRow = await Row.findOneAndRemove({shop: id});
         return deletedRow;
     },
     async userJoinRow(id, user) {
         const row = await Row.findById(id);
+        console.log(row);
         if (row.status === 'closed') throw new Error('The row is closed');
         if (row.customers.some(customer => customer.user._id.toString() === user._id.toString())) {
             row.customers = row.customers.filter(customer => customer.user._id.toString() !== user._id.toString());

@@ -3,6 +3,7 @@ require('../src/api/database/mongodb');
 const express = require('express');
 const passport = require('passport');
 const helmet = require('helmet');
+const cors = require('cors');
 
 const rateLimit = require('../src/api/middlewares/rateLimit');
 const config = require('./api/config');
@@ -14,10 +15,7 @@ const v1Router = require('./api/v1/routes/index');
 
 const app = express();
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});
+app.use(cors());
 
 app.use(helmet());
 
@@ -31,6 +29,15 @@ app.use(passport.initialize());
 
 app.use(//'/v1',
     v1Router);
+
+app.use((req, res, next) => {
+    if (!req.originalUrl.includes('.')) {
+        res.status(404).json({error: `Can't find ${req.originalUrl} on this server!`});
+    } else {
+        next();
+    }
+});
+
 app.use(errorHandler);
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

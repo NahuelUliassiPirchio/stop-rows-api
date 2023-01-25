@@ -28,7 +28,7 @@ const ShopsService = {
             },
             null,
             {limit: parseInt(limit), skip: parseInt(offset)},
-        ).populate('row');
+        );
 
         return shops;
     },
