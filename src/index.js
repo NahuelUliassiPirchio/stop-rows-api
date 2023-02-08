@@ -32,7 +32,7 @@ app.use(//'/v1',
 
 app.use((req, res, next) => {
     if (!req.originalUrl.includes('.')) {
-        res.status(404).json({error: `Can't find ${req.originalUrl} on this server!`});
+        res.status(404).json({message: `Can't find ${req.originalUrl} on this server!`});
     } else {
         next();
     }

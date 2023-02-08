@@ -5,7 +5,7 @@ const ShopsService = {
     getAllShops: async (query) => {
         const search = query.search || '';
         const limit = query.limit || 10;
-        const offset = query.offset || 0;
+        const page = query.page || 1;
         const status = query.status === 'open' ? true : query.status === 'closed' ? false : undefined;
         const lat = query.lat;
         const lng = query.lng;
@@ -14,12 +14,13 @@ const ShopsService = {
                 $near: {
                     $geometry: {
                         type: 'Point',
-                        coordinates: [lat, lng],
+                        coordinates: [lng, lat],
                     },
                     $maxDistance: 10000,
                 },
             },
         } : {};
+        
         const shops = await Shop.find(
             {
                 name: {$regex: search, $options: 'i'},
@@ -27,10 +28,22 @@ const ShopsService = {
                 ...location,
             },
             null,
-            {limit: parseInt(limit), skip: parseInt(offset)},
+            {limit: parseInt(limit), skip: (page - 1) * limit},
         );
-
-        return shops;
+        
+        const totalShops = await Shop.find(
+            {
+                name: {$regex: search, $options: 'i'},
+                'row.status': status,
+                ...location,
+            },
+        ).countDocuments();
+        
+        return {
+            data: shops,
+            total: totalShops,
+            totalPages: Math.ceil(totalShops / limit),
+        };
     },
     getShopById: async (id) => {
         const shop = await Shop.findById(id);

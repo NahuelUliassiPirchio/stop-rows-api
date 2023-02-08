@@ -5,3 +5,4 @@ const JwtStrategy = require('./strategies/jwtStategy');
 
 passport.use(LocalStrategy);
 passport.use(JwtStrategy);
+passport.use('jwt-refresh', JwtStrategy);

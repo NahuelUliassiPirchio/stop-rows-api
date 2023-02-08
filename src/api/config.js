@@ -10,8 +10,10 @@ module.exports = {
         saltRounds: process.env.AUTH_SALT_ROUNDS,
     },
     jwt: {
-        secret: process.env.JWT_SECRET,
+        accessSecret: process.env.JWT_SECRET,
+        refreshSecret: process.env.JWT_REFRESH_SECRET,
         expiresIn: process.env.JWT_EXPIRES_IN,
+        refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
     },
     rateLimit: {
         windowMs: process.env.RATE_LIMIT_WINDOW_MS,
