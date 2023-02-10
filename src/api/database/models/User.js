@@ -53,7 +53,7 @@ UserSchema.index({ email: 1 }, { unique: true });
 UserSchema.index({ username: 1 }, { unique: true });
 
 UserSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
+    transform: (_, returnedObject) => {
         delete returnedObject.password;
         delete returnedObject.__v;
         returnedObject.id = returnedObject._id.toString();

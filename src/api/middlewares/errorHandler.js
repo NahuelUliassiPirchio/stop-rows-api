@@ -2,7 +2,7 @@ const ApiError = require('../../common/ApiError');
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
-    console.log(err);
+    console.log(err.message);
     let error = new ApiError('Internal Server Error', 500);
 
     if (err.name === 'UnauthorizedError') {
@@ -15,7 +15,7 @@ const errorHandler = (err, req, res, next) => {
         error.status = 400;
     }
 
-    if (err.name === 'CastError') {
+    if (err.name === 'CastError' || err.message?.includes('not found')) {
         error.message = 'Resource not found';
         error.status = 404;
     }

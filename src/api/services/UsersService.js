@@ -8,6 +8,9 @@ const UsersService = {
     },
     async getUserById(id) {
         const user = await User.findById(id);
+        if(!user){
+            throw new Error('User not found');
+        }
         return user;
     },
     async getUserByEmail(email) {

@@ -39,6 +39,8 @@ app.use((req, res, next) => {
 });
 
 app.use(errorHandler);
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });
+
+module.exports = {app, server};
