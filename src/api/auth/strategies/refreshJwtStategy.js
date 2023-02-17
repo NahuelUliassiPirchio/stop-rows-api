@@ -5,7 +5,7 @@ const config = require('../../config');
 
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    expiresIn: parseInt(config.jwt.refreshExpiresIn),
+    expiresIn: config.jwt.refreshExpiresIn,
     secretOrKey: config.jwt.refreshSecret,
 };
 
