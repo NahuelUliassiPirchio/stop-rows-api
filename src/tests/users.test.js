@@ -32,7 +32,7 @@ describe('Users', () => {
     });
         
     describe('POST /users', () => {
-        test('should return 419 for attempting to create a user with an existing username', async () => {
+        test('should return 409 for attempting to create a user with an existing username', async () => {
                 
             const userToCreate = {
                 username: initialUsers[0].username,
@@ -44,10 +44,10 @@ describe('Users', () => {
             
             await api.post('/users')
                 .send(userToCreate)
-                .expect(419);
+                .expect(409);
         });
             
-        test('should return 419 for attempting to create a user with an existing email', async () => {
+        test('should return 409 for attempting to create a user with an existing email', async () => {
             const userToCreate = {
                 ...basicUser,
                 email: initialUsers[0].email,
@@ -55,7 +55,7 @@ describe('Users', () => {
             
             await api.post('/users')
                 .send(userToCreate)
-                .expect(419);
+                .expect(409);
         });
             
         test('all users with customer role should have no shops', async ()=> {
@@ -132,7 +132,7 @@ describe('Users', () => {
                 .expect(400);
         });
 
-        test('should return 419 for attempting to update a user with an existing username', async () => {
+        test('should return 409 for attempting to update a user with an existing username', async () => {
             const user = await api.get('/users/');
             const id = user.body[0].id;
             const userToUpdate = {
@@ -141,10 +141,10 @@ describe('Users', () => {
             };
             await api.put(`/users/${id}`)
                 .send(userToUpdate)
-                .expect(419);
+                .expect(409);
         });
 
-        test('should return 419 for attempting to update a user with an existing email', async () => {
+        test('should return 409 for attempting to update a user with an existing email', async () => {
             const user = await api.get('/users/');
             const id = user.body[0].id;
             const userToUpdate = {
@@ -153,7 +153,7 @@ describe('Users', () => {
             };
             await api.put(`/users/${id}`)
                 .send(userToUpdate)
-                .expect(419);
+                .expect(409);
         });
     });
 

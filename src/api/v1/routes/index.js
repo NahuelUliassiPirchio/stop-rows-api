@@ -15,7 +15,7 @@ router.use('/shops', shopsRouter);
 shopsRouter.use('/:shopId/rows', passport.authenticate('jwt', {session: false}), rowsRouter.forShopRouterOnwer);
 router.use('/rows/:rowId', passport.authenticate('jwt', {session: false}), rowsRouter.forShopRouterCustomer);
 router.use('/users', usersRouter);
-router.use('/profile', passport.authenticate('jwt-refresh', {session: false}), profileRouter);
+router.use('/profile', passport.authenticate('jwt', {session: false}), profileRouter);
 router.use('/categories', categoriesRouter);
 
 module.exports = router;

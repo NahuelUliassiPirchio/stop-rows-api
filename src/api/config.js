@@ -17,6 +17,6 @@ module.exports = {
     },
     rateLimit: {
         windowMs: process.env.RATE_LIMIT_WINDOW_MS,
-        max: process.env.RATE_LIMIT_MAX,
+        max: process.env.NODE_ENV === 'test' ? 0 : process.env.RATE_LIMIT_MAX,
     },
 };

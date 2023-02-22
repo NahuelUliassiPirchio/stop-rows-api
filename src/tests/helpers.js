@@ -3,40 +3,6 @@ const {app} = require('../index');
 
 const api = superTest(app);
 
-const initialShops = [
-    {
-        name: 'Test Shop',
-        address: 'Test Address',
-        phone: '123456789',
-        email: 'testshop@test.com',
-        description: 'Test Description',
-        website: 'https://testshop.com',
-        logo: 'https://testshop.com/logo.png',
-        coords: [0, 0],
-    },
-    {
-        name: 'John Shop',
-        address: 'John Address',
-        phone: '987654321',
-        email: 'testjohnshop@test.com',
-        description: 'John Description',
-        website: 'https://johnshop.com',
-        logo: 'https://johnshop.com/logo.png',
-        coords: [0, 0],
-    },
-];
-
-const basicShop = {
-    name: 'Basic Shop',
-    address: 'Basic Address',
-    phone: '123456789',
-    email: 'basicshop@test.com',
-    description: 'Basic Description',
-    website: 'https://basicshop.com',
-    logo: 'https://basicshop.com/logo.png',
-    coords: [0, 0],
-};
-
 const initialUsers = [
     {
         username: 'test',
@@ -79,6 +45,41 @@ const createUsers = async () => {
     }));
 
     return users;
+};
+
+
+const initialShops = [
+    {
+        name: 'Test Shop',
+        address: 'Test Address',
+        phone: '123456789',
+        email: 'testshop@test.com',
+        description: 'Test Description',
+        website: 'https://testshop.com',
+        logo: 'https://testshop.com/logo.png',
+        coords: [0, 0],
+    },
+    {
+        name: 'John Shop',
+        address: 'John Address',
+        phone: '987654321',
+        email: 'testjohnshop@test.com',
+        description: 'John Description',
+        website: 'https://johnshop.com',
+        logo: 'https://johnshop.com/logo.png',
+        coords: [0, 0],
+    },
+];
+
+const basicShop = {
+    name: 'Basic Shop',
+    address: 'Basic Address',
+    phone: '123456789',
+    email: 'basicshop@test.com',
+    description: 'Basic Description',
+    website: 'https://basicshop.com',
+    logo: 'https://basicshop.com/logo.png',
+    coords: [0, 0],
 };
 
 const createShops = async () => {

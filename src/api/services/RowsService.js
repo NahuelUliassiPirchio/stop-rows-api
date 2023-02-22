@@ -22,13 +22,17 @@ const RowsService = {
         return newRow;
     },
     async resumeRow(id) {
-        const resumedRow = await Row.findOne({shop: id, status: 'closed'});
+        const resumedRow = await Row.findOne({shop: id});
+        if (!resumedRow) throw new Error('Row not found');
+        if (resumedRow.status === 'open') throw new Error('The row is already open');
         resumedRow.status = 'open';
         resumedRow.save();
         return resumedRow;
     },
     async stopRow(id) {
-        const stoppedRow = await Row.findOne({shop: id, status: 'open'});
+        const stoppedRow = await Row.findOne({shop: id});
+        if (!stoppedRow) throw new Error('Row not found');
+        if (stoppedRow.status === 'closed') throw new Error('The row is already closed');
         stoppedRow.status = 'closed';
         stoppedRow.save();
         return stoppedRow;
@@ -39,16 +43,19 @@ const RowsService = {
     },
     async deleteRow(id) {
         const shop = await Shop.findOne({id});
+        if (!shop) throw new Error('Shop not found');
+        const deletedRow = await Row.findOneAndRemove({shop: id});
+        if (!deletedRow) throw new Error('Row not found');
+        
         shop.row = null;
         await shop.save();
-
-        const deletedRow = await Row.findOneAndRemove({shop: id});
+        
         return deletedRow;
     },
     async userJoinRow(id, user) {
         const row = await Row.findById(id);
-        console.log(row);
-        if (row.status === 'closed') throw new Error('The row is closed');
+        if (!row) throw new Error('Row not found');
+        if (row.status === 'closed') throw new Error('The row is not open');
         if (row.customers.some(customer => customer.user._id.toString() === user._id.toString())) {
             row.customers = row.customers.filter(customer => customer.user._id.toString() !== user._id.toString());
         }
@@ -60,10 +67,13 @@ const RowsService = {
     },
     async userLeaveRow(id, user) {
         const row = await Row.findById(id);
-        if (row.status === 'closed') throw new Error('The row is closed');
-        if (!row.customers.includes(user)) throw new Error('User is not in the row');
+        if (!row) throw new Error('Row not found');
+        if (row.status === 'closed') throw new Error('The row is not open');
+        if (!row.customers.some(customer => customer.user._id.toString() === user._id.toString())) {
+            throw new Error('User not found in the row');
+        } 
 
-        row.customers = row.customers.filter(customer => customer.user._id !== user._id);
+        row.customers = row.customers.filter(customer => customer.user._id.toString() !== user._id.toString());
         row.save();
         user.row = null;
         user.save();

@@ -27,7 +27,7 @@ describe('Auth', () => {
             expect(response.body).toHaveProperty('refreshToken');
         });
 
-        test('should return 419 for attempting to create a user with an existing username', async () => {
+        test('should return 409 for attempting to create a user with an existing username', async () => {
             const userToCreate = {
                 username: initialUsers[0].username,
                 email: 'other@test.com',
@@ -38,10 +38,10 @@ describe('Auth', () => {
 
             await api.post('/auth/signup')
                 .send(userToCreate)
-                .expect(419);
+                .expect(409);
         });
 
-        test('should return 419 for attempting to create a user with an existing email', async () => {
+        test('should return 409 for attempting to create a user with an existing email', async () => {
             const userToCreate = {
                 username: 'other',
                 email: initialUsers[0].email,
@@ -52,7 +52,7 @@ describe('Auth', () => {
 
             await api.post('/auth/signup')
                 .send(userToCreate)
-                .expect(419);
+                .expect(409);
         });
     });
         

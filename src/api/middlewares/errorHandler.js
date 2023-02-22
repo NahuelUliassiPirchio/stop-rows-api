@@ -22,7 +22,12 @@ const errorHandler = (err, req, res, next) => {
 
     if (err.code === 11000 && err.name === 'MongoServerError') {
         error.message = 'Duplicate field value entered';
-        error.status = 419;
+        error.status = 409;
+    }
+
+    if (err.message?.includes('is already') || err.message?.includes('is not')) {
+        error.message = err.message;
+        error.status = 409;
     }
 
     return res.status(error.status).json({ message: error.message });
