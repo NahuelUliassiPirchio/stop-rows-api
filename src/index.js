@@ -8,12 +8,15 @@ const cors = require('cors');
 const rateLimit = require('../src/api/middlewares/rateLimit');
 const config = require('./api/config');
 const errorHandler = require('./api/middlewares/errorHandler');
+const { swaggerDocs } = require('./api/v1/swagger');
 
 const PORT = config.port;
 
 const v1Router = require('./api/v1/routes/index');
 
 const app = express();
+
+swaggerDocs(app);
 
 app.use(cors());
 

@@ -24,7 +24,6 @@ const shopUpdateSchema = Joi.object({
     owner: Joi.string().min(3).max(30),
     coords: Joi.array().items(Joi.number()),
     categories: Joi.array().items(Joi.string().min(3).max(30)),
-    id: Joi.string(),
 });
 
 const shopFilterAndPaginationSchema = Joi.object({

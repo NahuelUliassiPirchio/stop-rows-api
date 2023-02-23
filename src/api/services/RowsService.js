@@ -41,16 +41,13 @@ const RowsService = {
         const updatedRow = await Row.findByIdAndUpdate(id, row, {new: true});
         return updatedRow;
     },
-    async deleteRow(id) {
-        const shop = await Shop.findOne({id});
+    async deleteRow(shopId) {
+        const shop = await Shop.findById(shopId);
         if (!shop) throw new Error('Shop not found');
-        const deletedRow = await Row.findOneAndRemove({shop: id});
-        if (!deletedRow) throw new Error('Row not found');
-        
+        if (!shop.row) throw new Error('Row not found');
+        await Row.findByIdAndRemove(shop.row._id);
         shop.row = null;
-        await shop.save();
-        
-        return deletedRow;
+        return await shop.save();
     },
     async userJoinRow(id, user) {
         const row = await Row.findById(id);

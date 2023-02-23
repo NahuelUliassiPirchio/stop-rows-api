@@ -3,9 +3,9 @@ const config = require('../config');
 const UsersService = require('../services/UsersService');
 
 const generateToken = (user) => {
-    const accessToken = sign({ id: user.id, role: user.role }, config.jwt.accessSecret,
+    const token = sign({ id: user.id, role: user.role }, config.jwt.accessSecret,
         {expiresIn: parseInt(config.jwt.expiresIn)});
-    return { accessToken, expiresIn: config.jwt.expiresIn };
+    return { token, expiresIn: config.jwt.expiresIn };
 };
 
 
