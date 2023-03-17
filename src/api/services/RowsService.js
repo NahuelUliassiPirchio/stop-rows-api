@@ -38,8 +38,9 @@ const RowsService = {
         return stoppedRow;
     },
     async updateRow(id, row) {
-        const updatedRow = await Row.findByIdAndUpdate(id, row, {new: true});
-        return updatedRow;
+        const stoppedRow = await Row.findOneAndUpdate({shop: id}, row, {new: true});
+        if (!stoppedRow) throw new Error('Row not found');
+        return stoppedRow;
     },
     async deleteRow(shopId) {
         const shop = await Shop.findById(shopId);

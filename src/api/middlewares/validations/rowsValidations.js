@@ -5,9 +5,10 @@ const createRowSchema = Joi.object({
 });
 
 const updateRowSchema = Joi.object({
-    // customers: Joi.array().items(Joi.object({
-    //     user: Joi.string(),
-    // })),
+    customers: Joi.array().items(Joi.object({
+        user: Joi.string(),
+        date: Joi.date(),
+    })),
     status: Joi.string().valid('open', 'closed'),
 });
 

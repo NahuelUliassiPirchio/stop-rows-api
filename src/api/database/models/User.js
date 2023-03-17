@@ -61,6 +61,14 @@ UserSchema.set('toJSON', {
     }
 });
 
+UserSchema.pre('save', function(next) {
+    this.$where = {
+        isDeleted: false,
+    };
+    this.updatedAt = Date.now();
+    next();
+});
+
 const User = model('User', UserSchema);
 
 module.exports = User;

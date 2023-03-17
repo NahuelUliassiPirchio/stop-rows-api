@@ -6,7 +6,7 @@ const ShopsService = {
         const search = query.search || '';
         const limit = query.limit || 10;
         const page = query.page || 1;
-        const status = query.status === 'open' ? true : query.status === 'closed' ? false : undefined;
+        const statusExists = query.status === 'closed' ? {$exists: false} : query.status === 'open' ? {$exists: true} : undefined;
         const lat = query.lat;
         const lng = query.lng;
         const location = (lat && lng) ? {
@@ -24,25 +24,25 @@ const ShopsService = {
         const shops = await Shop.find(
             {
                 name: {$regex: search, $options: 'i'},
-                'row.status': status,
+                row: statusExists,
                 ...location,
             },
             null,
             {limit: parseInt(limit), skip: (page - 1) * limit},
         );
-        
-        const totalShops = await Shop.find(
-            {
-                name: {$regex: search, $options: 'i'},
-                'row.status': status,
-                ...location,
-            },
-        ).countDocuments();
-        
+
+        const totalShops = await Shop.find({
+            name: {$regex: search, $options: 'i'},
+            row: statusExists,
+            ...location,
+        });
+        const totalShopsCount = totalShops.length;
+
+
         return {
             data: shops,
-            total: totalShops,
-            totalPages: Math.ceil(totalShops / limit),
+            total: totalShopsCount,
+            totalPages: Math.ceil(totalShopsCount / limit),
         };
     },
     getShopById: async (id) => {

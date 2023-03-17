@@ -18,7 +18,12 @@ const app = express();
 
 swaggerDocs(app);
 
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: false,
+}));
 
 app.use(helmet());
 
