@@ -50,10 +50,9 @@ const ShopsService = {
         if(shop === null) throw new Error('Shop not found');
         return shop;
     },
-    addShop: async (shop) => {
-        const user = await getUserById(shop.owner);
-        if(user === null) throw new Error('User not found');
-
+    addShop: async (shop, userId) => {
+        const user = await getUserById(userId);
+        shop.owner = user._id;
         shop.location = {
             type: 'Point',
             coordinates: shop.coords,

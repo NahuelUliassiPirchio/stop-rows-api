@@ -20,9 +20,9 @@ const ShopsController = {
         }
     },
     addShop: async (req, res, next) => {
-        const { body } = req;
+        const { body, user } = req;
         try {
-            const shop = await ShopsService.addShop(body);
+            const shop = await ShopsService.addShop(body, user.id);
             res.status(201).json(shop);
         } catch (err) {
             next(err);

@@ -1,5 +1,7 @@
 const { Router } = require('express');
+const passport = require('passport');
 const controller = require('../../controllers/ShopsController');
+const ownsShop = require('../../middlewares/ownsShop');
 
 const { validateShop, validateShopUpdate, validateShopFilter } = require('../../middlewares/validations/shopsValidations');
 const router = Router();
@@ -43,9 +45,6 @@ const router = Router();
  *         logo:
  *           type: string
  *           description: the link to the logo of the shop
- *         owner:
- *           type: string
- *           description: the owner's id of the shop
  *         coords:
  *           type: array
  *           description: the coordinates of the shop [lat, lng]
@@ -60,7 +59,6 @@ const router = Router();
  *        email: shop@exampl.com
  *        website: shop.com
  *        logo: shop.com/logo
- *        owner: 5f9f1b9f1b9f1b9f1b9f1b9f
  *        coords: [30.123, 30.123]
  *        categories: [5f9f1b9f1b9f1b9f1b9f1b9f, 5f9f1b9f1b9f1b9f1b9f1b9f]
  * 
@@ -239,7 +237,7 @@ router.get('/:id', controller.getShopById);
  *       500:
  *          description: error
  */
-router.post('/', validateShop, controller.addShop);
+router.post('/', passport.authenticate('jwt', {session: false}), validateShop, controller.addShop);
 
 /**
  * @swagger
@@ -281,7 +279,7 @@ router.post('/', validateShop, controller.addShop);
  *       500:
  *          description: failed operation
  */
-router.put('/:id', validateShopUpdate, controller.updateShop);
+router.put('/:id', passport.authenticate('jwt', {session: false}), ownsShop, validateShopUpdate, controller.updateShop);
 
 /**
  * @swagger
@@ -315,6 +313,6 @@ router.put('/:id', validateShopUpdate, controller.updateShop);
  *       500:
  *          description: failed operation
  */
-router.delete('/:id', controller.deleteShop);
+router.delete('/:id', passport.authenticate('jwt', {session: false}), ownsShop, controller.deleteShop);
 
 module.exports = router;
