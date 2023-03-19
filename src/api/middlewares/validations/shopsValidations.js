@@ -20,7 +20,7 @@ const shopUpdateSchema = Joi.object({
     phone: Joi.string().min(3).max(30),
     email: Joi.string().min(3).max(30),
     website: Joi.string().min(3).max(30),
-    logo: Joi.string().min(3).max(30),
+    logo: Joi.string().min(3).max(120),
     owner: Joi.string().min(3).max(30),
     coords: Joi.array().items(Joi.number()),
     categories: Joi.array().items(Joi.string().min(3).max(30)),
