@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "cmd /C set NODE_ENV=development && nodemon src\\index.js",
     "start": "cmd /C set NODE_ENV=production && node src\\index.js",
-    "test": "cmd /C set NODE_ENV=test && jest --verbose",
-    "test:watch": "cmd /C set NODE_ENV=test && jest --watch",
     "lint": "cmd /C eslint . --ext .js",
     "lint:fix": "cmd /C eslint . --ext .js --fix"
   },
