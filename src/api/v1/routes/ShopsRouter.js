@@ -143,6 +143,11 @@ const router = Router();
  *              enum: [open, closed]
  *          description: the status of the shop
  *        - in: query
+ *          name: category
+ *          schema:
+ *              type: string
+ *          description: category id used to filter shops
+ *        - in: query
  *          name: lat
  *          schema:
  *              type: number

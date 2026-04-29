@@ -29,6 +29,8 @@ const shopFilterAndPaginationSchema = Joi.object({
     page: Joi.number().integer().min(1),
     limit: Joi.number().integer().min(1).max(100),
     status: Joi.string().valid('open', 'closed'),
+    category: Joi.string().min(3).max(30),
+    categories: Joi.string().min(3).max(30),
     lat: Joi.number().when('lng', { is: Joi.exist(), then: Joi.required() }).min(-90).max(90),
     lng: Joi.number().min(-180).max(180),
 });

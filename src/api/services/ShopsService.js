@@ -7,6 +7,8 @@ const ShopsService = {
         const limit = query.limit || 10;
         const page = query.page || 1;
         const statusExists = query.status === 'closed' ? {$exists: false} : query.status === 'open' ? {$exists: true} : undefined;
+        const category = query.category || query.categories;
+        const categoryFilter = category ? {categories: category} : {};
         const lat = query.lat;
         const lng = query.lng;
         const location = (lat && lng) ? {
@@ -25,6 +27,7 @@ const ShopsService = {
             {
                 name: {$regex: search, $options: 'i'},
                 row: statusExists,
+                ...categoryFilter,
                 ...location,
             },
             null,
@@ -34,6 +37,7 @@ const ShopsService = {
         const totalShops = await Shop.find({
             name: {$regex: search, $options: 'i'},
             row: statusExists,
+            ...categoryFilter,
             ...location,
         });
         const totalShopsCount = totalShops.length;
