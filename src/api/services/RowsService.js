@@ -59,7 +59,9 @@ const RowsService = {
         }
         row.customers.push({user, date: new Date()});
         row.save();
-        user.row = row._id;
+        if (!user.row.some(r => r.toString() === row._id.toString())) {
+            user.row.push(row._id);
+        }
         user.save();
         return row;
     },
@@ -69,11 +71,11 @@ const RowsService = {
         if (row.status === 'closed') throw new Error('The row is not open');
         if (!row.customers.some(customer => customer.user._id.toString() === user._id.toString())) {
             throw new Error('User not found in the row');
-        } 
+        }
 
         row.customers = row.customers.filter(customer => customer.user._id.toString() !== user._id.toString());
         row.save();
-        user.row = null;
+        user.row = user.row.filter(r => r.toString() !== row._id.toString());
         user.save();
         return {row, user};
     },

@@ -42,11 +42,12 @@ const UserSchema = new Schema({
             ref: 'Shop',
         },
     ],
-    row: {
-        type: Schema.Types.ObjectId,
-        ref: 'Row',
-        default: null,
-    },
+    row: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Row',
+        }
+    ],
 });
 
 UserSchema.index({ email: 1 }, { unique: true });
