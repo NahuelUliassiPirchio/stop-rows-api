@@ -35,6 +35,19 @@ app.use(express.urlencoded({extended: true}));
 require('./api/auth');
 app.use(passport.initialize());
 
+const mongoose = require('mongoose');
+app.get('/health', (req, res) => {
+    const dbState = mongoose.connection.readyState;
+    const dbStatus = dbState === 1 ? 'connected' : dbState === 2 ? 'connecting' : 'disconnected';
+    const status = dbState === 1 ? 'ok' : 'degraded';
+
+    res.status(dbState === 1 ? 200 : 503).json({
+        status,
+        uptime: Math.floor(process.uptime()),
+        db: dbStatus,
+    });
+});
+
 app.use(//'/v1',
     v1Router);
 
