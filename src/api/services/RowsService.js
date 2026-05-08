@@ -54,8 +54,8 @@ const RowsService = {
         const row = await Row.findById(id);
         if (!row) throw new Error('Row not found');
         if (row.status === 'closed') throw new Error('The row is not open');
-        if (row.customers.some(customer => customer.user._id.toString() === user._id.toString())) {
-            row.customers = row.customers.filter(customer => customer.user._id.toString() !== user._id.toString());
+        if (row.customers.some(customer => customer.user.toString() === user._id.toString())) {
+            row.customers = row.customers.filter(customer => customer.user.toString() !== user._id.toString());
         }
         row.customers.push({user, date: new Date()});
         row.save();
@@ -69,11 +69,11 @@ const RowsService = {
         const row = await Row.findById(id);
         if (!row) throw new Error('Row not found');
         if (row.status === 'closed') throw new Error('The row is not open');
-        if (!row.customers.some(customer => customer.user._id.toString() === user._id.toString())) {
+        if (!row.customers.some(customer => customer.user.toString() === user._id.toString())) {
             throw new Error('User not found in the row');
         }
 
-        row.customers = row.customers.filter(customer => customer.user._id.toString() !== user._id.toString());
+        row.customers = row.customers.filter(customer => customer.user.toString() !== user._id.toString());
         row.save();
         user.row = user.row.filter(r => r.toString() !== row._id.toString());
         user.save();
