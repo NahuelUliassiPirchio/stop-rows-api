@@ -1,6 +1,7 @@
-const {Schema, model} = require('mongoose');
+import { Schema, model } from 'mongoose';
+import { IUserDocument } from '../../../types/User';
 
-const UserSchema = new Schema({
+const UserSchema = new Schema<IUserDocument>({
     name: {
         type: String,
         required: true,
@@ -54,22 +55,17 @@ UserSchema.index({ email: 1 }, { unique: true });
 UserSchema.index({ username: 1 }, { unique: true });
 
 UserSchema.set('toJSON', {
-    transform: (_, returnedObject) => {
+    transform: (_: IUserDocument, returnedObject: Record<string, unknown>) => {
         delete returnedObject.password;
         delete returnedObject.__v;
-        returnedObject.id = returnedObject._id.toString();
+        returnedObject.id = (returnedObject._id as { toString(): string }).toString();
         delete returnedObject._id;
     }
 });
 
 UserSchema.pre('save', function(next) {
-    this.$where = {
-        isDeleted: false,
-    };
-    this.updatedAt = Date.now();
+    this.updatedAt = new Date();
     next();
 });
 
-const User = model('User', UserSchema);
-
-module.exports = User;
+export default model<IUserDocument>('User', UserSchema);

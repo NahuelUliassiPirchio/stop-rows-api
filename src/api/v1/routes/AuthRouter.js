@@ -138,7 +138,7 @@ router.post('/verify', async (req, res) => {
     try {
         const decoded = jwt.verify(token, config.jwt.accessSecret);
         return res.status(200).json({ decoded });
-    } catch (err) {
+    } catch (_) {
         return res.status(401).json({ message: 'Invalid token' });
     }
 });

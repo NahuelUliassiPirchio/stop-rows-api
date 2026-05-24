@@ -1,6 +1,8 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 
-module.exports = {
+dotenv.config();
+
+export default {
     port: process.env.PORT,
     db: {
         mongodbUri: process.env.NODE_ENV === 'test' ? process.env.MONGODB_TEST_URI : process.env.MONGODB_URI,
