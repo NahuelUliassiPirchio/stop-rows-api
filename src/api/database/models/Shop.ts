@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { IShopDocument } from '../../../types/Shop';
+import { IShop, IShopDocument } from '../../../types/Shop';
 
 const locationSchema = new Schema({
     type: {
@@ -13,7 +13,7 @@ const locationSchema = new Schema({
     },
 });
 
-const ShopSchema = new Schema<IShopDocument>({
+const ShopSchema = new Schema<IShop>({
     name: {
         type: String,
         required: true,

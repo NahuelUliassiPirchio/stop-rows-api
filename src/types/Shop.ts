@@ -18,7 +18,7 @@ export interface IShop {
     createdAt: Date;
     updatedAt: Date;
     categories: Types.ObjectId[];
-    row: Types.ObjectId;
+    row?: Types.ObjectId;
 }
 
 export interface IShopDocument extends IShop, Document {}

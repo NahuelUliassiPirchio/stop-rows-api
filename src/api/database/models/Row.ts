@@ -1,6 +1,7 @@
-const {Schema, model} = require('mongoose');
+import { Schema, model } from 'mongoose';
+import { IRowDocument } from '../../../types/Row';
 
-const rowSchema = new Schema({
+const rowSchema = new Schema<IRowDocument>({
     shop: {
         type: Schema.Types.ObjectId,
         ref: 'Shop',
@@ -29,15 +30,15 @@ const rowSchema = new Schema({
     },
 });
 
-rowSchema.index({shop: 1}, {unique: true});
-rowSchema.index({status: 1});
+rowSchema.index({ shop: 1 }, { unique: true });
+rowSchema.index({ status: 1 });
 
 rowSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        returnedObject.id = returnedObject._id.toString();
+    transform: (_: IRowDocument, returnedObject: Record<string, unknown>) => {
+        returnedObject.id = (returnedObject._id as { toString(): string }).toString();
         delete returnedObject._id;
         delete returnedObject.__v;
     }
 });
 
-module.exports = model('Row', rowSchema);
+export default model<IRowDocument>('Row', rowSchema);
