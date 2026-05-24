@@ -1,17 +1,23 @@
-const ApiError = require('../../common/ApiError');
+import { Request, Response, NextFunction } from 'express';
+import ApiError from '../../common/ApiError';
 
-// eslint-disable-next-line no-unused-vars
-const errorHandler = (err, req, res, next) => {
+interface AppError extends Error {
+    status?: number;
+    code?: number;
+    errors?: Record<string, { message: string }>;
+}
+
+const errorHandler = (err: AppError, _req: Request, res: Response, _next: NextFunction) => {
     console.log(err.message);
-    let error = new ApiError('Internal Server Error', 500);
+    const error = new ApiError('Internal Server Error', 500);
 
     if (err.name === 'UnauthorizedError') {
         error.message = 'Invalid Token';
         error.status = 401;
     }
 
-    if (err.name === 'ValidationError') {
-        error.message = Object.values(err.errors).map((val) => val.message);
+    if (err.name === 'ValidationError' && err.errors) {
+        error.message = Object.values(err.errors).map(val => val.message).join(', ');
         error.status = 400;
     }
 
@@ -33,4 +39,4 @@ const errorHandler = (err, req, res, next) => {
     return res.status(error.status).json({ message: error.message });
 };
 
-module.exports = errorHandler;
+export default errorHandler;

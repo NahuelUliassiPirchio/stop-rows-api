@@ -1,4 +1,5 @@
-const Joi = require('joi');
+import Joi from 'joi';
+import { Request, Response, NextFunction } from 'express';
 
 const shopSchema = Joi.object({
     name: Joi.string().min(3).max(30).required(),
@@ -35,7 +36,7 @@ const shopFilterAndPaginationSchema = Joi.object({
     lng: Joi.number().min(-180).max(180),
 });
 
-const validateShop = (req, res, next) => {
+const validateShop = (req: Request, res: Response, next: NextFunction) => {
     const { error } = shopSchema.validate(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
@@ -43,7 +44,7 @@ const validateShop = (req, res, next) => {
     next();
 };
 
-const validateShopUpdate = (req, res, next) => {
+const validateShopUpdate = (req: Request, res: Response, next: NextFunction) => {
     const { error } = shopUpdateSchema.validate(req.body);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
@@ -51,7 +52,7 @@ const validateShopUpdate = (req, res, next) => {
     next();
 };
 
-const validateShopFilter = (req, res, next) => {
+const validateShopFilter = (req: Request, res: Response, next: NextFunction) => {
     const { error } = shopFilterAndPaginationSchema.validate(req.query);
     if (error) {
         return res.status(400).json({ error: error.details[0].message });
@@ -59,7 +60,7 @@ const validateShopFilter = (req, res, next) => {
     next();
 };
 
-module.exports = {
+export default {
     validateShop,
     validateShopUpdate,
     validateShopFilter,
