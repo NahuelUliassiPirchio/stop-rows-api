@@ -1,8 +1,10 @@
-const Shop = require('../database/models/Shop');
-const {getUserById} = require('./UsersService');
+import { IShopDocument, IShopQuery, ShopInput } from '../../types/Shop';
+
+import Shop from '../database/models/Shop';
+import UsersService from './UsersService';
 
 const ShopsService = {
-    getAllShops: async (query) => {
+    getAllShops: async (query: IShopQuery) => {
         const search = query.search || '';
         const limit = query.limit || 10;
         const page = query.page || 1;
@@ -31,7 +33,7 @@ const ShopsService = {
                 ...location,
             },
             null,
-            {limit: parseInt(limit), skip: (page - 1) * limit},
+            {limit: limit, skip: (page - 1) * limit},
         );
 
         const totalShops = await Shop.find({
@@ -49,37 +51,31 @@ const ShopsService = {
             totalPages: Math.ceil(totalShopsCount / limit),
         };
     },
-    getShopById: async (id) => {
+    getShopById: async (id: string) => {
         const shop = await Shop.findById(id);
         if(shop === null) throw new Error('Shop not found');
         return shop;
     },
-    addShop: async (shop, userId) => {
-        const user = await getUserById(userId);
-        shop.owner = user._id;
-        shop.location = {
-            type: 'Point',
-            coordinates: shop.coords,
-        };
-        const newShop = await Shop.create(shop);
+    addShop: async (shop: ShopInput, userId: string): Promise<IShopDocument> => {
+        const user = await UsersService.getUserById(userId);
+        const newShop = await Shop.create({
+            ...shop,
+            owner: user._id,
+            location: { type: 'Point', coordinates: shop.location.coordinates },
+        });
         user.shops.push(newShop._id);
         await user.save();
         return newShop;
     },
-    updateShop: async (id, shop) => {
-        if (shop.coords) {
-            shop.location = {
-                type: 'Point',
-                coordinates: shop.coords,
-            };
+    updateShop: async (id: string, shop: Partial<ShopInput>): Promise<IShopDocument | null> => {
+        if (shop.location?.coordinates) {
+            shop.location = { type: 'Point', coordinates: shop.location.coordinates };
         }
-        const updatedShop = await Shop.findByIdAndUpdate(id, shop, {new: true});
-        return updatedShop;
+        return Shop.findByIdAndUpdate(id, shop, { new: true });
     },
-    deleteShop: async (id) => {
-        const deletedShop = await Shop.findByIdAndDelete(id);
-        return deletedShop;
+    deleteShop: async (id: string): Promise<IShopDocument | null> => {
+        return Shop.findByIdAndDelete(id);
     },
 };
 
-module.exports = ShopsService;
+export default ShopsService;

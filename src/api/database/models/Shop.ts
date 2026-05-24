@@ -1,4 +1,5 @@
-const {Schema, model} = require('mongoose');
+import { Schema, model } from 'mongoose';
+import { IShopDocument } from '../../../types/Shop';
 
 const locationSchema = new Schema({
     type: {
@@ -12,7 +13,7 @@ const locationSchema = new Schema({
     },
 });
 
-const ShopSchema = new Schema({
+const ShopSchema = new Schema<IShopDocument>({
     name: {
         type: String,
         required: true,
@@ -74,17 +75,16 @@ const ShopSchema = new Schema({
 
 ShopSchema.index({ email: 1 }, { unique: true });
 ShopSchema.index({ website: 1 }, { unique: true });
-ShopSchema.index({ name: 1, description: 1 }, { unique: true});
+ShopSchema.index({ name: 1, description: 1 }, { unique: true });
 ShopSchema.index({ name: 'text', description: 'text' });
 ShopSchema.index({ location: '2dsphere' });
 
 ShopSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
+    transform: (_: IShopDocument, returnedObject: Record<string, unknown>) => {
         delete returnedObject.__v;
-        returnedObject.id = returnedObject._id.toString();
+        returnedObject.id = (returnedObject._id as { toString(): string }).toString();
         delete returnedObject._id;
     }
 });
 
-
-module.exports = model('Shop', ShopSchema);
+export default model<IShopDocument>('Shop', ShopSchema);
