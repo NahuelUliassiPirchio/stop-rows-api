@@ -1,7 +1,8 @@
-const CategoriesService = require('../services/CategoriesService');
+import CategoriesService from '../services/CategoriesService';
+import { Response, Request, NextFunction } from 'express';
 
 const CategoriesController = {
-    getAllCategories: async (_req, res, next) => {
+    getAllCategories: async (_req: Request, res: Response, next: NextFunction) => {
         try {
             const categories = await CategoriesService.getAllCategories();
             res.status(200).json(categories);
@@ -9,7 +10,7 @@ const CategoriesController = {
             next(err);
         }
     },
-    getCategoryById: async (req, res, next) => {
+    getCategoryById: async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         try {
             const category = await CategoriesService.getCategoryById(id);
@@ -18,7 +19,7 @@ const CategoriesController = {
             next(err);
         }
     },
-    addCategory: async (req, res, next) => {
+    addCategory: async (req: Request, res: Response, next: NextFunction) => {
         const { body } = req;
         try {
             const category = await CategoriesService.addCategory(body);
@@ -27,7 +28,7 @@ const CategoriesController = {
             next(err);
         }
     },
-    updateCategory: async (req, res, next) => {
+    updateCategory: async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         const { body } = req;
         try {
@@ -37,7 +38,7 @@ const CategoriesController = {
             next(err);
         }
     },
-    deleteCategory: async (req, res, next) => {
+    deleteCategory: async (req: Request, res: Response, next: NextFunction) => {
         const { id } = req.params;
         try {
             const category = await CategoriesService.deleteCategory(id);
@@ -48,4 +49,4 @@ const CategoriesController = {
     },
 };
 
-module.exports = CategoriesController;
+export default CategoriesController;

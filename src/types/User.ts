@@ -1,11 +1,19 @@
 import { Document, Types } from 'mongoose';
 
+export const UserRolesEnum = {
+    ADMIN: 'admin',
+    CUSTOMER: 'customer',
+    OWNER: 'owner',
+} as const;
+
+export type UserRole = typeof UserRolesEnum[keyof typeof UserRolesEnum];
+
 export interface IUser {
     name: string;
     email: string;
     username: string;
     password: string;
-    role: string;
+    role: UserRole;
     isDeleted: boolean;
     createdAt: Date;
     updatedAt: Date;

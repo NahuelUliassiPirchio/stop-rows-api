@@ -1,7 +1,9 @@
-const RowsService = require('../services/RowsService');
+import RowsService from '../services/RowsService';
+import { Request, Response, NextFunction } from 'express';
+import { AuthenticatedRequest } from '../../types/express';
 
 const RowsController = {
-    getAllRows: async (req, res, next) => {
+    getAllRows: async (_req: Request, res: Response, next: NextFunction) => {
         try {
             const rows = await RowsService.getAllRows();
             res.status(200).json(rows);
@@ -9,7 +11,7 @@ const RowsController = {
             next(err);
         }
     },
-    getRowById: async (req, res, next) => {
+    getRowById: async (req: Request, res: Response, next: NextFunction) => {
         const { rowId } = req.params;
         try {
             const row = await RowsService.getRowById(rowId);
@@ -18,7 +20,7 @@ const RowsController = {
             next(err);
         }
     },
-    addRow: async (req, res, next) => {
+    addRow: async (req: Request, res: Response, next: NextFunction) => {
         const { body } = req;
         const { shopId } = req.params;
         try {
@@ -28,7 +30,7 @@ const RowsController = {
             next(err);
         }
     },
-    resumeRow: async (req, res, next) => {
+    resumeRow: async (req: Request, res: Response, next: NextFunction) => {
         const { shopId } = req.params;
         try {
             const row = await RowsService.resumeRow(shopId);
@@ -37,7 +39,7 @@ const RowsController = {
             next(err);
         }
     },
-    stopRow: async (req, res, next) => {
+    stopRow: async (req: Request, res: Response, next: NextFunction) => {
         const { shopId } = req.params;
         try {
             const row = await RowsService.stopRow(shopId);
@@ -46,7 +48,7 @@ const RowsController = {
             next(err);
         }
     },
-    updateRow: async (req, res, next) => {
+    updateRow: async (req: Request, res: Response, next: NextFunction) => {
         const { shopId } = req.params;
         const { body } = req;
         try {
@@ -56,7 +58,7 @@ const RowsController = {
             next(err);
         }
     },
-    deleteRow: async (req, res, next) => {
+    deleteRow: async (req: Request, res: Response, next: NextFunction) => {
         const { shopId } = req.params;
         try {
             const row = await RowsService.deleteRow(shopId);
@@ -65,7 +67,7 @@ const RowsController = {
             next(err);
         }
     },
-    userJoinRow: async (req, res, next) => {
+    userJoinRow: async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         const { rowId } = req.params;
         try {
             const row = await RowsService.userJoinRow(rowId, req.user);
@@ -74,7 +76,7 @@ const RowsController = {
             next(err);
         }
     },
-    userLeaveRow: async (req, res, next) => {
+    userLeaveRow: async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
         const { rowId } = req.params;
         try {
             const row = await RowsService.userLeaveRow(rowId, req.user);
@@ -85,4 +87,4 @@ const RowsController = {
     },
 };
 
-module.exports = RowsController;
+export default RowsController;
