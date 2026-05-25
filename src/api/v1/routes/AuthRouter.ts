@@ -1,11 +1,11 @@
-const { Router } = require('express');
-const passport = require('passport');
-const controller = require('../../controllers/AuthController');
+import { Router, RequestHandler } from 'express';
+import passport from 'passport';
+import jwt from 'jsonwebtoken';
+import config from '../../config';
+import controller from '../../controllers/AuthController';
+import { validateSignUp, validateLogin } from '../../middlewares/validations/authValidations';
 
-const jwt = require('jsonwebtoken');
 const router = Router();
-const config = require('../../config');
-const { validateSignUp, validateLogin } = require('../../middlewares/validations/authValidations');
 
 /**
  * @swagger
@@ -65,7 +65,7 @@ const { validateSignUp, validateLogin } = require('../../middlewares/validations
  *       500:
  *         description: internal error
  */
-router.post('/login', validateLogin, passport.authenticate('local', {session: false}), controller.login);
+router.post('/login', validateLogin, passport.authenticate('local', {session: false}), controller.login as RequestHandler);
 
 /**
  * @swagger
@@ -131,16 +131,18 @@ router.post('/signup', validateSignUp, controller.signup);
  *       500:
  *         description: internal error
  */
-router.post('/refresh', passport.authenticate('jwt-refresh', {session: false}), controller.refresh);
+router.post('/refresh', passport.authenticate('jwt-refresh', {session: false}), controller.refresh as RequestHandler);
 
 router.post('/verify', async (req, res) => {
     const { token } = req.body;
     try {
-        const decoded = jwt.verify(token, config.jwt.accessSecret);
+        const secret = config.jwt.accessSecret;
+        if (!secret) throw new Error('JWT_SECRET is not defined');
+        const decoded = jwt.verify(token, secret);
         return res.status(200).json({ decoded });
-    } catch (_) {
+    } catch  {
         return res.status(401).json({ message: 'Invalid token' });
     }
 });
 
-module.exports = router;
+export default router;

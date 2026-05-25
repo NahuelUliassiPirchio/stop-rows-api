@@ -1,18 +1,18 @@
-require('../src/api/database/mongodb');
+import '../src/api/database/mongodb';
 
-const express = require('express');
-const passport = require('passport');
-const helmet = require('helmet');
-const cors = require('cors');
+import express from 'express';
+import { initialize } from 'passport';
+import helmet from 'helmet';
+import cors from 'cors';
 
-const rateLimit = require('../src/api/middlewares/rateLimit');
-const config = require('./api/config');
-const errorHandler = require('./api/middlewares/errorHandler');
-const { swaggerDocs } = require('./api/v1/swagger');
+import rateLimit from '../src/api/middlewares/rateLimit';
+import config from './api/config';
+import errorHandler from './api/middlewares/errorHandler';
+import { swaggerDocs } from './api/v1/swagger';
 
 const PORT = config.port;
 
-const v1Router = require('./api/v1/routes/index');
+import v1Router from './api/v1/routes/index';
 
 const app = express();
 
@@ -32,12 +32,12 @@ app.use(rateLimit);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-require('./api/auth');
-app.use(passport.initialize());
+import './api/auth';
+app.use(initialize());
 
-const mongoose = require('mongoose');
-app.get('/health', (req, res) => {
-    const dbState = mongoose.connection.readyState;
+import { connection } from 'mongoose';
+app.get('/health', (_req, res) => {
+    const dbState = connection.readyState;
     const dbStatus = dbState === 1 ? 'connected' : dbState === 2 ? 'connecting' : 'disconnected';
     const status = dbState === 1 ? 'ok' : 'degraded';
 
@@ -64,4 +64,4 @@ const server = app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });
 
-module.exports = {app, server};
+export {app, server};

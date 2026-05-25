@@ -1,5 +1,5 @@
-const { Router } = require('express');
-const controller = require('../../controllers/ProfileController');
+import { Router, RequestHandler } from 'express';
+import controller from '../../controllers/ProfileController';
 
 const router = Router();
 
@@ -28,7 +28,7 @@ const router = Router();
  *       500:
  *         description: internal error
  */
-router.get('/', controller.getProfile);
+router.get('/', controller.getProfile as RequestHandler);
 
 /**
  * @swagger
@@ -63,7 +63,7 @@ router.get('/', controller.getProfile);
  *       500:
  *          description: failed operation
  */
-router.put('/', controller.updateProfile);
+router.put('/', controller.updateProfile as RequestHandler);
 
 /**
  * @swagger
@@ -90,7 +90,7 @@ router.put('/', controller.updateProfile);
  *       500:
  *          description: failed operation
  */
-router.delete('/', controller.deleteProfile);
+router.delete('/', controller.deleteProfile as RequestHandler);
 
 /**
  * @swagger
@@ -117,6 +117,6 @@ router.delete('/', controller.deleteProfile);
  *       500:
  *          description: failed operation
  */
-router.post('/restore', controller.restoreProfile);
+router.post('/restore', controller.restoreProfile as RequestHandler);
 
-module.exports = router;
+export default router;

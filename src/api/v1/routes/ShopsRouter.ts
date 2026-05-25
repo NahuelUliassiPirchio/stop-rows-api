@@ -1,9 +1,9 @@
-const { Router } = require('express');
-const passport = require('passport');
-const controller = require('../../controllers/ShopsController');
-const ownsShop = require('../../middlewares/ownsShop');
+import { Router, RequestHandler } from 'express';
+import passport from 'passport';
+import controller from '../../controllers/ShopsController';
+import ownsShop from '../../middlewares/ownsShop';
+import { validateShop, validateShopFilter, validateShopUpdate } from '../../middlewares/validations/shopsValidations';
 
-const { validateShop, validateShopUpdate, validateShopFilter } = require('../../middlewares/validations/shopsValidations');
 const router = Router();
 
 /**
@@ -242,7 +242,7 @@ router.get('/:id', controller.getShopById);
  *       500:
  *          description: error
  */
-router.post('/', passport.authenticate('jwt', {session: false}), validateShop, controller.addShop);
+router.post('/', passport.authenticate('jwt', {session: false}), validateShop, controller.addShop as RequestHandler);
 
 /**
  * @swagger
@@ -284,7 +284,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), validateShop, c
  *       500:
  *          description: failed operation
  */
-router.put('/:id', passport.authenticate('jwt', {session: false}), ownsShop, validateShopUpdate, controller.updateShop);
+router.put('/:id', passport.authenticate('jwt', {session: false}), ownsShop as RequestHandler, validateShopUpdate, controller.updateShop);
 
 /**
  * @swagger
@@ -318,6 +318,6 @@ router.put('/:id', passport.authenticate('jwt', {session: false}), ownsShop, val
  *       500:
  *          description: failed operation
  */
-router.delete('/:id', passport.authenticate('jwt', {session: false}), ownsShop, controller.deleteShop);
+router.delete('/:id', passport.authenticate('jwt', {session: false}), ownsShop as RequestHandler, controller.deleteShop);
 
-module.exports = router;
+export default router;

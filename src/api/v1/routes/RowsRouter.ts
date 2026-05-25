@@ -1,13 +1,13 @@
-const { Router } = require('express');
-const controller = require('../../controllers/RowsController');
-const roles = require('../../database/models/UserRolesEnum');
-const ownsShop = require('../../middlewares/ownsShop');
-const hasRole = require('../../middlewares/rolesAuthentication');
+import { Router, RequestHandler } from 'express';
+import controller from '../../controllers/RowsController';
+import ownsShop from '../../middlewares/ownsShop';
+import hasRole from '../../middlewares/rolesAuthentication';
+import { validateRowUpdate } from '../../middlewares/validations/rowsValidations';
+import { UserRolesEnum } from '../../../types/User';
 
-const forShopRouterOnwer = Router({ mergeParams: true});
-const forShopRouterCustomer = Router({ mergeParams: true});
+const forShopRouterOnwer = Router({ mergeParams: true });
+const forShopRouterCustomer = Router({ mergeParams: true });
 const publicRouter = Router();
-const { validateRowUpdate } = require('../../middlewares/validations/rowsValidations');
 
 /**
  * @swagger
@@ -89,7 +89,7 @@ publicRouter.get('/', controller.getAllRows);
  */
 publicRouter.get('/:rowId', controller.getRowById);
 
-forShopRouterCustomer.use(hasRole([roles.CUSTOMER]));
+forShopRouterCustomer.use(hasRole([UserRolesEnum.CUSTOMER]) as RequestHandler);
 
 /**
  * @swagger
@@ -111,7 +111,7 @@ forShopRouterCustomer.use(hasRole([roles.CUSTOMER]));
  *       500:
  *         description: internal error
  */
-forShopRouterCustomer.post('/join', controller.userJoinRow);
+forShopRouterCustomer.post('/join', controller.userJoinRow as RequestHandler);
 /**
  * @swagger
  * /rows/{id}/leave:
@@ -149,9 +149,9 @@ forShopRouterCustomer.post('/join', controller.userJoinRow);
  *       500:
  *         description: internal error
  */
-forShopRouterCustomer.delete('/leave', controller.userLeaveRow);
+forShopRouterCustomer.delete('/leave', controller.userLeaveRow as RequestHandler);
 
-forShopRouterOnwer.use(hasRole([roles.OWNER, roles.ADMIN]), ownsShop);
+forShopRouterOnwer.use(hasRole([UserRolesEnum.OWNER, UserRolesEnum.ADMIN]) as RequestHandler, ownsShop as RequestHandler);
 
 /**
  * @swagger
@@ -313,8 +313,4 @@ forShopRouterOnwer.put('/', validateRowUpdate, controller.updateRow);
 forShopRouterOnwer.delete('/finish', controller.deleteRow);
 
 
-module.exports = {
-    forShopRouterOnwer,
-    forShopRouterCustomer,
-    publicRouter,
-};
+export { forShopRouterOnwer, forShopRouterCustomer, publicRouter };

@@ -25,7 +25,7 @@ const validateCategoryUpdate = (req: Request, res: Response, next: NextFunction)
     next();
 };
 
-export default {
+export {
     validateCategory,
     validateCategoryUpdate,
 };

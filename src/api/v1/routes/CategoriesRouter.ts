@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const controller = require('../../controllers/CategoriesController');
+import { Router } from 'express';
+import controller from '../../controllers/CategoriesController';
 
-const { validateCategory, validateCategoryUpdate } = require('../../middlewares/validations/categoriesValidations');
+import { validateCategory, validateCategoryUpdate } from '../../middlewares/validations/categoriesValidations';
 const router = Router();
 
 /**
@@ -199,4 +199,4 @@ router.put('/:id', validateCategoryUpdate, controller.updateCategory);
  */
 router.delete('/:id', controller.deleteCategory);
 
-module.exports = router;
+export default router;

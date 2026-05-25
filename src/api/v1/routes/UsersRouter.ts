@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const controller = require('../../controllers/UsersController');
+import { Router } from 'express';
+import controller from '../../controllers/UsersController';
 
-const { validateUser, validateUserUpdate } = require('../../middlewares/validations/usersValidations');
+import { validateUser, validateUserUpdate } from '../../middlewares/validations/usersValidations';
 const router = Router();
 
 /**
@@ -235,4 +235,4 @@ router.put('/:id', validateUserUpdate, controller.updateUser);
  */
 router.delete('/:id', controller.deleteUser);
 
-module.exports = router;
+export default router;

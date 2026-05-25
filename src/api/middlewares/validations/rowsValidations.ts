@@ -29,7 +29,4 @@ const validateRowUpdate = (req: Request, res: Response, next: NextFunction) => {
     next();
 };
 
-export default {
-    validateRow,
-    validateRowUpdate,
-};
+export { validateRow, validateRowUpdate };

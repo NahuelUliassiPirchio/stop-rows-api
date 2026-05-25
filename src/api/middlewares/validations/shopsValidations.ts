@@ -60,8 +60,4 @@ const validateShopFilter = (req: Request, res: Response, next: NextFunction) => 
     next();
 };
 
-export default {
-    validateShop,
-    validateShopUpdate,
-    validateShopFilter,
-};
+export { validateShop, validateShopUpdate, validateShopFilter };
