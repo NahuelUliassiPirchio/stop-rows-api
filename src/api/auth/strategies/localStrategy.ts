@@ -1,6 +1,6 @@
-const {Strategy} = require('passport-local');
-const { comparePassword } = require('../../../common/Encryption');
-const usersService = require('../../services/UsersService');
+import {Strategy} from 'passport-local';
+import { comparePassword } from '../../../common/Encryption';
+import usersService from '../../services/UsersService';
 
 const localStrategy = new Strategy(
     {
@@ -24,4 +24,4 @@ const localStrategy = new Strategy(
     }
 );
 
-module.exports = localStrategy;
+export default localStrategy;
