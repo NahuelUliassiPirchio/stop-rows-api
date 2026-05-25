@@ -1,10 +1,10 @@
-const { connection } = require('mongoose');
-const { server } = require('../index');
-const User = require('../api/database/models/User');
+import { connection } from 'mongoose';
+import { server } from '../index';
+import User from '../api/database/models/User';
 
-const {userHelper, api} = require('./helpers');
+import {userHelper, api} from './helpers';
 const {createUsers, initialUsers, basicUser} = userHelper;
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 describe('Auth', () => {
     beforeEach(async () => {
@@ -113,9 +113,10 @@ describe('Auth', () => {
                 });
 
             const refreshToken = loginResponse.body.refreshToken;
-            const decodedToken = jwt.decode(refreshToken);
+            const decodedToken = jwt.decode(refreshToken) as jwt.JwtPayload | null;
+            if (!decodedToken) throw Error('No decoded token');
             decodedToken.exp = 0;
-            const expiredToken = jwt.sign(decodedToken, process.env.JWT_SECRET);
+            const expiredToken = jwt.sign(decodedToken, process.env.JWT_SECRET!);
 
             await api.post('/auth/refresh')
                 .set('Authorization', `Bearer ${expiredToken}`)

@@ -1,8 +1,8 @@
-const {connection} = require('mongoose');
-const {server} = require('../index');
-const User = require('../api/database/models/User');
+import {connection} from 'mongoose';
+import {server} from '../index';
+import User from '../api/database/models/User';
 
-const {userHelper, api} = require('./helpers');
+import {userHelper, api} from './helpers';
 const {createUsers, initialUsers, basicUser} = userHelper;
 
 describe('Users', () => {

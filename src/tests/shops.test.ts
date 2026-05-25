@@ -1,9 +1,9 @@
-const {connection} = require('mongoose');
-const {server} = require('../index');
-const Shop = require('../api/database/models/Shop');
-const User = require('../api/database/models/User');
+import {connection} from 'mongoose';
+import {server} from '../index';
+import Shop from '../api/database/models/Shop';
+import User from '../api/database/models/User';
 
-const { shopHelper, basicUser, api } = require('./helpers');
+import { shopHelper, basicUser, api } from './helpers';
 const { createShops, getAllShopsContent, initialShops, basicShop } = shopHelper;
     
 
@@ -49,9 +49,8 @@ describe('Shops', () => {
             const user = await api.get('/users')
                 .expect(200)
                 .then(res => res.body[0]);
-            
-            const shop = basicShop;
-            shop.owner = user.id;
+
+            const shop = { ...basicShop, owner: user.id };
 
             await api.post('/shops')
                 .send(shop)
@@ -70,13 +69,10 @@ describe('Shops', () => {
                 .expect(201)
                 .then(res => res.body);
 
-            const shop = basicShop;
-            shop.owner = user.id;
-            
-            delete shop.name;
+            const { name: _name, ...shopWithoutName } = { ...basicShop, owner: user.id };
 
             await api.post('/shops')
-                .send(shop)
+                .send(shopWithoutName)
                 .expect(400);
         });
     });
@@ -109,10 +105,8 @@ describe('Shops', () => {
         });
 
         test('should return a 404 if the shop does not exist', async () => {
-            const shop = basicShop;
-
             await api.put('/shops/asdfsdafsfsfafsdfsdfsadf')
-                .send(shop)
+                .send(basicShop)
                 .expect(404)
                 .expect('Content-Type', /application\/json/)
                 .then(res => res.body);

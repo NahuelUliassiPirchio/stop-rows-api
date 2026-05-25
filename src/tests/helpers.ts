@@ -1,5 +1,6 @@
-const superTest = require('supertest');
-const {app} = require('../index');
+import superTest from 'supertest';
+import {app} from '../index';
+import { ShopInput } from '../types/Shop';
 
 const api = superTest(app);
 
@@ -48,7 +49,7 @@ const createUsers = async () => {
 };
 
 
-const initialShops = [
+const initialShops: ShopInput[] = [
     {
         name: 'Test Shop',
         address: 'Test Address',
@@ -57,7 +58,8 @@ const initialShops = [
         description: 'Test Description',
         website: 'https://testshop.com',
         logo: 'https://testshop.com/logo.png',
-        coords: [0, 0],
+        location: { type: 'Point', coordinates: [0, 0] },
+        categories: [],
     },
     {
         name: 'John Shop',
@@ -67,11 +69,12 @@ const initialShops = [
         description: 'John Description',
         website: 'https://johnshop.com',
         logo: 'https://johnshop.com/logo.png',
-        coords: [0, 0],
+        location: { type: 'Point', coordinates: [0, 0] },
+        categories: [],
     },
 ];
 
-const basicShop = {
+const basicShop: ShopInput = {
     name: 'Basic Shop',
     address: 'Basic Address',
     phone: '123456789',
@@ -79,18 +82,17 @@ const basicShop = {
     description: 'Basic Description',
     website: 'https://basicshop.com',
     logo: 'https://basicshop.com/logo.png',
-    coords: [0, 0],
+    location: { type: 'Point', coordinates: [0, 0] },
+    categories: [],
 };
 
 const createShops = async () => {
     const users = await createUsers();
 
     const shops = await Promise.all(initialShops.map(shop => {
-        shop.owner = users[0].id;
-
         return api
             .post('/shops')
-            .send(shop)
+            .send({ ...shop, owner: users[0].id })
             .expect(201)
             .then(res => res.body);
     }));
@@ -121,8 +123,9 @@ const userHelper = {
     createUsers
 };
 
-module.exports = {
+export {
     userHelper,
     shopHelper,
-    api
+    api,
+    basicUser
 };

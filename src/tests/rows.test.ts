@@ -1,11 +1,11 @@
-const {server} = require('../index');
-const {connection} = require('mongoose');
+import {server} from '../index';
+import {connection} from 'mongoose';
 
-const Row = require('../api/database/models/Row');
-const Shop = require('../api/database/models/Shop');
-const User = require('../api/database/models/User');
+import Row from '../api/database/models/Row';
+import Shop from '../api/database/models/Shop';
+import User from '../api/database/models/User';
 
-const {shopHelper, userHelper, api} = require('./helpers');
+import {shopHelper, userHelper, api} from './helpers';
 const {initialUsers} = userHelper;
 const {createShops} = shopHelper;
 
@@ -35,6 +35,9 @@ describe('Rows', () => {
         await createShops();
 
         const ownerUser = initialUsers.find(user => user.role === 'owner');
+        if (!ownerUser) {
+            throw Error('No owner on initial users');
+        }
         const owner = await api.post('/auth/login')
             .send({
                 email: ownerUser.email,
@@ -45,6 +48,9 @@ describe('Rows', () => {
         ownerToken = owner.accessToken.accessToken;
 
         const customerUser = initialUsers.find(user => user.role === 'customer');
+        if (!customerUser) {
+            throw Error('No customer on initial users');
+        }
         const customer = await api.post('/auth/login')
             .send({
                 email: customerUser.email,
