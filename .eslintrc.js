@@ -4,12 +4,24 @@ module.exports = {
         'commonjs': true,
         'es2021': true
     },
-    'extends': 'eslint:recommended',
+    'extends': [
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended'
+    ],
+    'parser': '@typescript-eslint/parser',
+    'plugins': ['@typescript-eslint'],
     'overrides': [
         {
-            'files': ['*.test.js'],
+            'files': ['*.test.js', '*.test.ts'],
             'env': {
                 'jest': true
+            }
+        },
+        {
+            'files': ['*.js'],
+            'rules': {
+                '@typescript-eslint/no-require-imports': 'off',
+                '@typescript-eslint/no-var-requires': 'off'
             }
         }
     ],
@@ -17,6 +29,8 @@ module.exports = {
         'ecmaVersion': 'latest'
     },
     'rules': {
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': ['error', { 'argsIgnorePattern': '^_', 'varsIgnorePattern': '^_' }],
         'indent': [
             'error',
             4

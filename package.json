@@ -2,14 +2,15 @@
   "name": "stop-rows-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js",
-    "test": "test jest --verbose",
-    "test:watch": "jest --watch",
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix"
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "NODE_ENV=test jest --verbose --runInBand",
+    "test:watch": "NODE_ENV=test jest --watch",
+    "lint": "eslint . --ext .js,.ts",
+    "lint:fix": "eslint . --ext .js,.ts --fix"
   },
   "engines": {
     "node": ">=24"
@@ -17,12 +18,31 @@
   "author": "Nahuel Uliassi Pirchio",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^4.17.25",
+    "@types/jest": "^30.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^25.9.1",
+    "@types/passport": "^1.0.17",
+    "@types/passport-jwt": "^4.0.1",
+    "@types/passport-local": "^1.0.38",
+    "@types/supertest": "^7.2.0",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "@typescript-eslint/eslint-plugin": "^8.59.4",
+    "@typescript-eslint/parser": "^8.59.4",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.4.2",
+    "mongodb-memory-server": "^11.1.0",
     "nodemon": "^3.1.14",
-    "supertest": "^6.3.3"
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.4.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
