@@ -19,8 +19,8 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const refresh = (req: AuthenticatedRequest, res: Response) => {
-    const token = authService.generateToken(req.user);
-    return res.status(200).json(token);
+    const { accessToken, expiresIn } = authService.generateToken(req.user);
+    return res.status(200).json({ accessToken, expiresIn });
 };
 
 export default {

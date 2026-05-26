@@ -3,6 +3,15 @@ import { Request, Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../../types/express';
 
 const RowsController = {
+    getRowByShopId: async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.params;
+        try {
+            const row = await RowsService.getRowByShopId(id);
+            res.status(200).json(row || {});
+        } catch (err) {
+            next(err);
+        }
+    },
     getAllRows: async (_req: Request, res: Response, next: NextFunction) => {
         try {
             const rows = await RowsService.getAllRows();
@@ -15,6 +24,7 @@ const RowsController = {
         const { rowId } = req.params;
         try {
             const row = await RowsService.getRowById(rowId);
+            if (!row) return res.status(404).json({ message: 'Row not found' });
             res.status(200).json(row);
         } catch (err) {
             next(err);

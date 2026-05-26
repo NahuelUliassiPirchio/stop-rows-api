@@ -7,12 +7,12 @@ import { IUserDocument, UserInput } from '../../types/User';
 const generateToken = (user: IUserDocument) => {
     const secret = config.jwt.accessSecret;
     if (!secret) throw new Error('JWT_SECRET is not defined');
-    const token = sign(
+    const accessToken = sign(
         { id: user._id, role: user.role },
         secret,
         { expiresIn: (config.jwt.expiresIn || '3600') as StringValue }
     );
-    return { token, expiresIn: config.jwt.expiresIn };
+    return { accessToken, expiresIn: config.jwt.expiresIn };
 };
 
 const generateRefreshToken = async (user: IUserDocument) => {

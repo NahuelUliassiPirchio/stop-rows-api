@@ -1,6 +1,7 @@
 import { Router, RequestHandler } from 'express';
 import passport from 'passport';
 import controller from '../../controllers/ShopsController';
+import rowsController from '../../controllers/RowsController';
 import ownsShop from '../../middlewares/ownsShop';
 import { validateShop, validateShopFilter, validateShopUpdate } from '../../middlewares/validations/shopsValidations';
 
@@ -242,7 +243,7 @@ router.get('/:id', controller.getShopById);
  *       500:
  *          description: error
  */
-router.post('/', passport.authenticate('jwt', {session: false}), validateShop, controller.addShop as RequestHandler);
+router.post('/', validateShop, controller.addShop as RequestHandler);
 
 /**
  * @swagger
@@ -284,7 +285,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), validateShop, c
  *       500:
  *          description: failed operation
  */
-router.put('/:id', passport.authenticate('jwt', {session: false}), ownsShop as RequestHandler, validateShopUpdate, controller.updateShop);
+router.put('/:id', validateShopUpdate, controller.updateShop);
 
 /**
  * @swagger
@@ -318,6 +319,8 @@ router.put('/:id', passport.authenticate('jwt', {session: false}), ownsShop as R
  *       500:
  *          description: failed operation
  */
-router.delete('/:id', passport.authenticate('jwt', {session: false}), ownsShop as RequestHandler, controller.deleteShop);
+router.delete('/:id', controller.deleteShop);
+
+router.get('/:id/rows', rowsController.getRowByShopId);
 
 export default router;

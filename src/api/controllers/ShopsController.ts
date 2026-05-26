@@ -21,7 +21,7 @@ const ShopsController = {
     },
     addShop: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const shop = await ShopsService.addShop(req.body, req.user!._id.toString());
+            const shop = await ShopsService.addShop(req.body, req.body.owner);
             res.status(201).json(shop);
         } catch (err) {
             next(err);

@@ -1,7 +1,7 @@
 import '../src/api/database/mongodb';
 
 import express from 'express';
-import { initialize } from 'passport';
+import passport from 'passport';
 import helmet from 'helmet';
 import cors from 'cors';
 
@@ -33,7 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 import './api/auth';
-app.use(initialize());
+app.use(passport.initialize());
 
 import { connection } from 'mongoose';
 app.get('/health', (_req, res) => {
@@ -60,8 +60,9 @@ app.use((req, res, next) => {
 });
 
 app.use(errorHandler);
-const server = app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}`);
-});
+const server = app.listen(
+    process.env.NODE_ENV === 'test' ? 0 : PORT,
+    () => console.log(`App listening on port ${PORT}`)
+);
 
 export {app, server};

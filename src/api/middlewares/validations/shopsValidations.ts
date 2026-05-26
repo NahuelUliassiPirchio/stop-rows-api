@@ -9,8 +9,12 @@ const shopSchema = Joi.object({
     email: Joi.string().min(3).max(30).required(),
     website: Joi.string().min(3).max(30).required(),
     logo: Joi.string().min(3).max(120).required(),
-    coords: Joi.array().items(Joi.number()).required(),
+    location: Joi.object({
+        type: Joi.string().valid('Point').required(),
+        coordinates: Joi.array().items(Joi.number()).length(2).required(),
+    }).required(),
     categories: Joi.array().items(Joi.string().min(3).max(30)),
+    owner: Joi.string(),
 });
 
 const shopUpdateSchema = Joi.object({
@@ -21,7 +25,10 @@ const shopUpdateSchema = Joi.object({
     email: Joi.string().min(3).max(30),
     website: Joi.string().min(3).max(30),
     logo: Joi.string().min(3).max(120),
-    coords: Joi.array().items(Joi.number()),
+    location: Joi.object({
+        type: Joi.string().valid('Point'),
+        coordinates: Joi.array().items(Joi.number()).length(2),
+    }),
     categories: Joi.array().items(Joi.string().min(3).max(30)),
 });
 

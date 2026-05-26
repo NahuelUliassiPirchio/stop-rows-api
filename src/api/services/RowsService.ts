@@ -12,12 +12,14 @@ const RowsService = {
         return Row.findById(id).populate('shop').populate('customers.user');
     },
 
+    async getRowByShopId(shopId: string): Promise<IRowDocument | null> {
+        return Row.findOne({ shop: shopId }).populate('shop').populate('customers.user');
+    },
+
     async addRow(row: RowInput, shopId: string): Promise<IRowDocument> {
         const shop = await Shop.findById(shopId);
         if (!shop) throw new Error('Shop not found');
-        if (shop.row) {
-            await Row.findByIdAndDelete(shop.row);
-        }
+        if (shop.row) throw new Error('The row is already started');
         const newRow = await Row.create({ ...row, shop: shopId });
         shop.row = newRow._id;
         await shop.save();
@@ -46,13 +48,15 @@ const RowsService = {
         return updatedRow;
     },
 
-    async deleteRow(shopId: string): Promise<void> {
+    async deleteRow(shopId: string): Promise<IRowDocument> {
         const shop = await Shop.findById(shopId);
         if (!shop) throw new Error('Shop not found');
         if (!shop.row) throw new Error('Row not found');
-        await Row.findByIdAndDelete(shop.row);
+        const deletedRow = await Row.findByIdAndDelete(shop.row);
+        if (!deletedRow) throw new Error('Row not found');
         shop.row = undefined;
         await shop.save();
+        return deletedRow;
     },
 
     async userJoinRow(id: string, user: IUserDocument): Promise<IRowDocument> {

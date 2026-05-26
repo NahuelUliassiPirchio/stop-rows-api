@@ -4,11 +4,18 @@ import Shop from '../database/models/Shop';
 
 const ownsShop = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { shopId } = req.params;
-    const shop = await Shop.findOne({ _id: shopId, owner: req.user._id });
-    if (!shop) {
-        return res.status(403).json({ message: 'You do not own this shop' });
+    try {
+        const shop = await Shop.findById(shopId);
+        if (!shop) {
+            return res.status(404).json({ message: 'Shop not found' });
+        }
+        if (shop.owner.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'You do not own this shop' });
+        }
+        next();
+    } catch (err) {
+        next(err);
     }
-    next();
 };
 
 export default ownsShop;

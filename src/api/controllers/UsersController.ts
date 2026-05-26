@@ -44,7 +44,7 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
 const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {
-        const deletedUser = await UsersService.deleteUser(Number(id));
+        const deletedUser = await UsersService.deleteUser(id as string);
         res.status(200).json(deletedUser);
     } catch (err) {
         next(err);

@@ -33,7 +33,7 @@ const UsersService = {
         return User.findByIdAndUpdate(id, user, { new: true });
     },
 
-    async deleteUser(id: number): Promise<IUserDocument | null> {
+    async deleteUser(id: string): Promise<IUserDocument | null> {
         return User.findByIdAndDelete(id);
     },
 
