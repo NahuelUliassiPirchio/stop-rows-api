@@ -1,11 +1,11 @@
-import '../src/api/database/mongodb';
+import './api/database/mongodb';
 
 import express from 'express';
 import passport from 'passport';
 import helmet from 'helmet';
 import cors from 'cors';
 
-import rateLimit from '../src/api/middlewares/rateLimit';
+import rateLimit from './api/middlewares/rateLimit';
 import config from './api/config';
 import errorHandler from './api/middlewares/errorHandler';
 import { swaggerDocs } from './api/v1/swagger';
