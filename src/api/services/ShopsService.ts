@@ -2,6 +2,10 @@ import { IShopDocument, IShopQuery, ShopInput } from '../../types/Shop';
 
 import Shop from '../database/models/Shop';
 import UsersService from './UsersService';
+import cache from './CacheService';
+
+const SHOP_KEY = (id: string) => `shop:${id}`;
+const SHOP_TTL = 300;
 
 const ShopsService = {
     getAllShops: async (query: IShopQuery) => {
@@ -52,9 +56,15 @@ const ShopsService = {
         };
     },
     getShopById: async (id: string) => {
+        const cached = cache.get<IShopDocument>(SHOP_KEY(id));
+        if (cached) return cached;
         const shop = await Shop.findById(id);
         if(shop === null) throw new Error('Shop not found');
+        cache.set(SHOP_KEY(id), shop, SHOP_TTL);
         return shop;
+    },
+    invalidateShopCache: (id: string) => {
+        cache.del(SHOP_KEY(id));
     },
     addShop: async (shop: ShopInput, userId: string): Promise<IShopDocument> => {
         const user = await UsersService.getUserById(userId);
@@ -71,10 +81,14 @@ const ShopsService = {
         if (shop.location?.coordinates) {
             shop.location = { type: 'Point', coordinates: shop.location.coordinates };
         }
-        return Shop.findByIdAndUpdate(id, shop, { new: true });
+        const updated = await Shop.findByIdAndUpdate(id, shop, { new: true });
+        cache.del(SHOP_KEY(id));
+        return updated;
     },
     deleteShop: async (id: string): Promise<IShopDocument | null> => {
-        return Shop.findByIdAndDelete(id);
+        const deleted = await Shop.findByIdAndDelete(id);
+        cache.del(SHOP_KEY(id));
+        return deleted;
     },
 };
 

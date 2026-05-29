@@ -2,6 +2,7 @@ import { IRowCustomer, IRowDocument, RowInput } from '../../types/Row';
 import { IUserDocument } from '../../types/User';
 import Row from '../database/models/Row';
 import Shop from '../database/models/Shop';
+import ShopsService from './ShopsService';
 
 const RowsService = {
     async getAllRows(): Promise<IRowDocument[]> {
@@ -23,6 +24,7 @@ const RowsService = {
         const newRow = await Row.create({ ...row, shop: shopId });
         shop.row = newRow._id;
         await shop.save();
+        ShopsService.invalidateShopCache(shopId);
         return newRow;
     },
 
@@ -31,6 +33,7 @@ const RowsService = {
         if (!row) throw new Error('Row not found');
         if (row.status === 'open') throw new Error('The row is already open');
         row.status = 'open';
+        ShopsService.invalidateShopCache(id);
         return row.save();
     },
 
@@ -39,6 +42,7 @@ const RowsService = {
         if (!row) throw new Error('Row not found');
         if (row.status === 'closed') throw new Error('The row is already closed');
         row.status = 'closed';
+        ShopsService.invalidateShopCache(id);
         return row.save();
     },
 
@@ -56,6 +60,7 @@ const RowsService = {
         if (!deletedRow) throw new Error('Row not found');
         shop.row = undefined;
         await shop.save();
+        ShopsService.invalidateShopCache(shopId);
         return deletedRow;
     },
 
